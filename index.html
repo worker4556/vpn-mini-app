@@ -172,15 +172,22 @@
     }
 
     function copyKey() {
-        if (!vlessKey) {
-            tg.showAlert('Сначала приобретите подписку!');
-            return;
-        }
+    // 1. Достаем ключ из параметров ссылки (?key=...)
+    const params = new URLSearchParams(window.location.search);
+    const vlessKey = params.get('key'); 
+
+    if (vlessKey && vlessKey !== "") {
+        // 2. Если ключ есть — копируем его
         navigator.clipboard.writeText(vlessKey).then(() => {
             tg.HapticFeedback.notificationOccurred('success');
-            tg.showAlert('Конфигурация скопирована!');
+            tg.showAlert('Конфигурация скопирована! Вставьте её в Hiddify или v2rayNG.');
         });
+    } else {
+        // 3. Если ключа нет — вежливо посылаем платить
+        tg.HapticFeedback.notificationOccurred('error');
+        tg.showAlert('❌ Сначала активируйте или продлите подписку.');
     }
+}
 </script>
 </body>
 </html>
