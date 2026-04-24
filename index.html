@@ -111,29 +111,37 @@
     <button class="btn btn-blue" onclick="copyKey()">📋 Копировать ключ</button>
     <button class="btn btn-outline" onclick="tg.sendData('buy_300')">💎 Продлить подписку</button>
 
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+   <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-        const params = new URLSearchParams(window.location.search);
-        document.getElementById('gb').innerText = (params.get('gb') || '0.00') + ' GB';
+    const params = new URLSearchParams(window.location.search);
+    
+    // Получаем данные
+    const expiry = params.get('expiry') || 'Нет';
+    const gb = params.get('gb') || '0.00';
+    const vlessKey = params.get('key') || ''; // Достаем ключ!
 
-        function showTab(platform, btn) {
-            tg.HapticFeedback.impactOccurred('light');
-            document.querySelectorAll('.instr-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(platform).classList.add('active');
-            btn.classList.add('active');
-        }
+    document.getElementById('gb').innerText = gb + ' GB';
+    document.getElementById('expiry').innerText = expiry;
 
-        function copyKey() {
-            // Вставьте логику получения ключа из URL
-            const key = "vless://ВАШ_КЛЮЧ_ИЗ_БЭКЕНДА";
-            navigator.clipboard.writeText(key).then(() => {
+    // Если ключа нет (не оплачено), прячем кнопку копирования
+    if (!vlessKey || expiry === 'Нет подписки') {
+        document.getElementById('copy-btn-container').style.display = 'none';
+        document.getElementById('status-badge').innerText = 'Не активен';
+        document.getElementById('status-badge').className = 'badge badge-inactive';
+    }
+
+    function copyKey() {
+        if (vlessKey) {
+            navigator.clipboard.writeText(vlessKey).then(() => {
                 tg.HapticFeedback.notificationOccurred('success');
-                tg.showAlert('Ключ скопирован в буфер обмена!');
+                tg.showAlert('Ключ успешно скопирован!');
             });
+        } else {
+            tg.showAlert('Сначала оплатите подписку');
         }
-    </script>
+    }
+</script>
 </body>
 </html>
