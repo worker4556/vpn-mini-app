@@ -12,6 +12,7 @@
             --accent-gradient: linear-gradient(135deg, #007AFF 0%, #00C6FF 100%);
             --text-main: #FFFFFF;
             --text-secondary: #8E8E93;
+            --apple-blue: #007AFF;
         }
 
         body {
@@ -26,7 +27,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Анимированный фон (моргание/свечение) */
         .glow-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 20%, rgba(0, 122, 255, 0.1), transparent 40%);
@@ -41,71 +41,66 @@
             background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px; padding: 24px;
+            border-radius: 24px; padding: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 20px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 16px;
         }
 
-        /* Главный статус */
+        /* Статус */
         .status-badge {
             display: inline-flex; align-items: center; gap: 6px;
             padding: 6px 12px; border-radius: 20px;
             background: rgba(48, 209, 88, 0.15); color: #30D158;
-            font-size: 13px; font-weight: 600; margin-bottom: 16px;
+            font-size: 13px; font-weight: 600; margin-bottom: 12px;
         }
-        .status-dot {
-            width: 8px; height: 8px; background: #30D158;
-            border-radius: 50%; box-shadow: 0 0 10px #30D158;
-            animation: blink 1.5s infinite;
-        }
-        @keyframes blink { 
-            0%, 100% { opacity: 1; } 50% { opacity: 0.3; } 
-        }
+        .status-dot { width: 8px; height: 8px; background: #30D158; border-radius: 50%; animation: blink 1.5s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-        h1 { font-size: 38px; font-weight: 700; margin: 0; letter-spacing: -1px; }
+        h1 { font-size: 32px; font-weight: 700; margin: 0; letter-spacing: -1px; }
 
-        /* Безлимитная полоска Apple-style */
-        .unlimited-track {
-            height: 6px; background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px; margin: 20px 0; overflow: hidden;
-        }
-        .unlimited-fill {
-            height: 100%; width: 100%;
-            background: var(--accent-gradient);
-            background-size: 200% 100%;
-            animation: flow 3s linear infinite;
-        }
+        /* Полоска */
+        .unlimited-track { height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; margin: 16px 0; overflow: hidden; }
+        .unlimited-fill { height: 100%; width: 100%; background: var(--accent-gradient); background-size: 200% 100%; animation: flow 3s linear infinite; }
         @keyframes flow { 0% { background-position: 0% 0%; } 100% { background-position: -200% 0%; } }
 
-        /* Табы платформ */
-        .platform-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab {
-            flex: 1; padding: 12px; border-radius: 14px;
-            background: rgba(255, 255, 255, 0.05); text-align: center;
-            font-size: 14px; font-weight: 600; cursor: pointer;
-            transition: 0.2s; border: 1px solid transparent;
+        /* Тарифы */
+        .plan-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 16px; border-radius: 16px; margin-bottom: 10px;
+            display: flex; justify-content: space-between; align-items: center;
+            border: 2px solid transparent; transition: 0.2s; cursor: pointer;
         }
-        .tab.active { background: #FFFFFF; color: #000000; }
+        .plan-card.active { border-color: var(--apple-blue); background: rgba(0, 122, 255, 0.1); }
+        .plan-title { display: block; font-weight: 700; font-size: 16px; }
+        .plan-desc { font-size: 12px; color: var(--text-secondary); }
+        .plan-price { font-weight: 700; font-size: 18px; }
+
+        /* Табы методов и платформ */
+        .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+        .tab-item {
+            flex: 1; padding: 10px; border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05); text-align: center;
+            font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s;
+        }
+        .tab-item.active { background: #FFFFFF; color: #000000; }
 
         /* Кнопки */
         .main-btn {
             background: #FFFFFF; color: #000000;
-            width: 100%; padding: 18px; border-radius: 18px;
+            width: 100%; padding: 16px; border-radius: 16px;
             border: none; font-size: 17px; font-weight: 600;
-            cursor: pointer; transition: transform 0.1s; margin-top: 10px;
+            cursor: pointer; transition: transform 0.1s;
         }
-        .main-btn:active { transform: scale(0.97); }
+        .main-btn:active { transform: scale(0.98); }
 
         .secondary-btn {
             background: rgba(255, 255, 255, 0.05); color: #FFFFFF;
-            width: 100%; padding: 18px; border-radius: 18px;
-            border: 1px solid rgba(255,255,255,0.1); font-size: 17px; margin-top: 10px;
+            width: 100%; padding: 16px; border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1); font-size: 16px; margin-top: 10px;
         }
 
-        .instr-text { font-size: 14px; color: var(--text-secondary); line-height: 1.4; display: none; }
-        .instr-text.active { display: block; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .instr-text { font-size: 13px; color: var(--text-secondary); line-height: 1.4; display: none; margin-top: 10px;}
+        .instr-text.active { display: block; }
     </style>
 </head>
 <body>
@@ -118,39 +113,54 @@
         <span>Система защищена</span>
     </div>
     <h1 id="gb-val">0.00 GB</h1>
-    <p style="color: var(--text-secondary); margin: 5px 0 0 0;">Трафик без ограничений</p>
-    
-    <div class="unlimited-track">
-        <div class="unlimited-fill"></div>
-    </div>
-    
-    <div style="display: flex; justify-content: space-between; font-size: 14px; color: var(--text-secondary);">
-        <span>Статус: Активен</span>
+    <div class="unlimited-track"><div class="unlimited-fill"></div></div>
+    <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary);">
+        <span>Активен</span>
         <span id="expiry-val">до --.--.----</span>
     </div>
 </div>
 
 <div class="card">
-    <h3 style="margin-top: 0;">Настройка устройства</h3>
-    <div class="platform-tabs">
-        <div class="tab active" onclick="setTab('ios', this)">iOS</div>
-        <div class="tab" onclick="setTab('and', this)">Android</div>
-        <div class="tab" onclick="setTab('pc', this)">Desktop</div>
-    </div>
+    <h3 style="margin: 0 0 16px 0; font-size: 18px;">Продлить подписку</h3>
     
-    <div id="ios-text" class="instr-text active">
-        Скачайте <b>Hiddify</b> или <b>Happ</b>. Скопируйте ключ и добавьте его через кнопку «+» или импорт из буфера.
+    <div class="plan-card" onclick="selectPlan('1m', this)" id="plan-1m">
+        <div class="plan-info">
+            <span class="plan-title">1 Месяц</span>
+            <span class="plan-desc">Базовый доступ</span>
+        </div>
+        <div class="plan-price">299₽</div>
     </div>
-    <div id="and-text" class="instr-text">
-        Рекомендуем <b>v2rayNG</b> или <b>Hiddify</b>. Вставьте ключ и нажмите на иконку подключения.
+
+    <div class="plan-card active" onclick="selectPlan('3m', this)" id="plan-3m">
+        <div class="plan-info">
+            <span class="plan-title">3 Месяца</span>
+            <span class="plan-desc">Выбор Squizy 🚀</span>
+        </div>
+        <div class="plan-price">799₽</div>
     </div>
-    <div id="pc-text" class="instr-text">
-        Используйте <b>v2rayN</b>. Скопируйте ключ и нажмите «Servers» -> «Add VLESS server from clipboard».
+
+    <div style="margin: 20px 0 10px 0; font-size: 14px; font-weight: 600;">Способ оплаты:</div>
+    <div class="tabs">
+        <div class="tab-item active" onclick="setMethod('stars', this)">⭐ Stars</div>
+        <div class="tab-item" onclick="setMethod('crypto', this)">⚡ Crypto</div>
     </div>
+
+    <button class="main-btn" onclick="processPayment()">Оплатить сейчас</button>
 </div>
 
-<button class="main-btn" onclick="copyKey()">📋 Копировать конфигурацию</button>
-<button class="secondary-btn" onclick="tg.sendData('buy')">💳 Продлить подписку</button>
+<div class="card">
+    <h3 style="margin: 0 0 12px 0; font-size: 17px;">Настройка</h3>
+    <div class="tabs">
+        <div class="tab-platform active" onclick="setPlatform('ios', this)" style="flex:1; padding: 8px; text-align: center; border-radius: 10px; background: rgba(255,255,255,0.05); font-size: 12px;">iOS</div>
+        <div class="tab-platform" onclick="setPlatform('and', this)" style="flex:1; padding: 8px; text-align: center; border-radius: 10px; background: rgba(255,255,255,0.05); font-size: 12px;">Android</div>
+        <div class="tab-platform" onclick="setPlatform('pc', this)" style="flex:1; padding: 8px; text-align: center; border-radius: 10px; background: rgba(255,255,255,0.05); font-size: 12px;">PC</div>
+    </div>
+    <div id="ios-text" class="instr-text active">Используйте <b>Hiddify</b> или <b>Happ</b>. Импорт из буфера.</div>
+    <div id="and-text" class="instr-text">Скачайте <b>v2rayNG</b>. Нажмите "+" -> "Import from clipboard".</div>
+    <div id="pc-text" class="instr-text">Используйте <b>v2rayN</b>. Servers -> Add from clipboard.</div>
+</div>
+
+<button class="secondary-btn" onclick="copyKey()">📋 Копировать ключ</button>
 
 <script>
     const tg = window.Telegram.WebApp;
@@ -158,36 +168,56 @@
     tg.backgroundColor = '#000000';
     tg.headerColor = '#000000';
 
+    let selectedPlan = '3m';
+    let selectedMethod = 'stars';
+
     const params = new URLSearchParams(window.location.search);
     document.getElementById('gb-val').innerText = (params.get('gb') || '0.00') + ' GB';
     document.getElementById('expiry-val').innerText = 'до ' + (params.get('expiry') || '--.--.--');
-    const vlessKey = params.get('key') || '';
 
-    function setTab(p, el) {
+    function selectPlan(plan, el) {
         tg.HapticFeedback.impactOccurred('medium');
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.instr-text').forEach(t => t.classList.remove('active'));
+        selectedPlan = plan;
+        document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('active'));
         el.classList.add('active');
+    }
+
+    function setMethod(method, el) {
+        tg.HapticFeedback.impactOccurred('light');
+        selectedMethod = method;
+        document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    function processPayment() {
+        tg.HapticFeedback.notificationOccurred('success');
+        // Отправляем данные боту: "buy_3m_stars" или "buy_1m_crypto"
+        tg.sendData(`buy_${selectedPlan}_${selectedMethod}`);
+    }
+
+    function setPlatform(p, el) {
+        tg.HapticFeedback.impactOccurred('light');
+        document.querySelectorAll('.tab-platform').forEach(t => {
+            t.style.background = 'rgba(255,255,255,0.05)';
+            t.style.color = '#fff';
+        });
+        el.style.background = '#fff';
+        el.style.color = '#000';
+        document.querySelectorAll('.instr-text').forEach(t => t.classList.remove('active'));
         document.getElementById(p + '-text').classList.add('active');
     }
 
     function copyKey() {
-    // 1. Достаем ключ из параметров ссылки (?key=...)
-    const params = new URLSearchParams(window.location.search);
-    const vlessKey = params.get('key'); 
-
-    if (vlessKey && vlessKey !== "") {
-        // 2. Если ключ есть — копируем его
-        navigator.clipboard.writeText(vlessKey).then(() => {
-            tg.HapticFeedback.notificationOccurred('success');
-            tg.showAlert('Конфигурация скопирована! Вставьте её в Hiddify или v2rayNG.');
-        });
-    } else {
-        // 3. Если ключа нет — вежливо посылаем платить
-        tg.HapticFeedback.notificationOccurred('error');
-        tg.showAlert('❌ Сначала активируйте или продлите подписку.');
+        const vlessKey = params.get('key');
+        if (vlessKey) {
+            navigator.clipboard.writeText(vlessKey).then(() => {
+                tg.HapticFeedback.notificationOccurred('success');
+                tg.showAlert('Ключ скопирован!');
+            });
+        } else {
+            tg.showAlert('Нет активного ключа');
+        }
     }
-}
 </script>
 </body>
 </html>
