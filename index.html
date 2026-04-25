@@ -25,14 +25,12 @@
                 radial-gradient(at 100% 100%, rgba(0, 198, 255, 0.1) 0px, transparent 50%);
             color: var(--text-main);
             margin: 0; padding: 20px;
-            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
         .card {
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border-radius: 24px; padding: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             margin-bottom: 16px;
@@ -46,17 +44,17 @@
         .status-dot { width: 8px; height: 8px; border-radius: 50%; }
         .dot-active { background: var(--apple-green); animation: blink 1.5s infinite; }
         .dot-inactive { background: var(--apple-red); }
+        .dot-idle { background: var(--apple-blue); }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
         h1 { font-size: 32px; font-weight: 700; margin: 0; letter-spacing: -1px; }
 
-        /* НОВАЯ СЕТКА СТАТИСТИКИ (Друзья/Устройства) */
         .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .stat-item { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 14px; text-align: center; }
-        .stat-item b { display: block; font-size: 18px; }
-        .stat-item span { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; }
+        .stat-item { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 16px; text-align: center; border: 1px solid rgba(255,255,255,0.03); }
+        .stat-item b { display: block; font-size: 20px; margin-bottom: 2px; }
+        .stat-item span { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .unlimited-track { height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; margin: 16px 0; overflow: hidden; }
+        .unlimited-track { height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; margin: 16px 0; overflow: hidden; }
         .unlimited-fill { height: 100%; width: 100%; background: var(--accent-gradient); background-size: 200% 100%; animation: flow 3s linear infinite; }
         @keyframes flow { 0% { background-position: 0% 0%; } 100% { background-position: -200% 0%; } }
 
@@ -64,31 +62,31 @@
             background: rgba(255, 255, 255, 0.05);
             padding: 16px; border-radius: 16px; margin-bottom: 10px;
             display: flex; justify-content: space-between; align-items: center;
-            border: 2px solid transparent; transition: 0.2s; cursor: pointer;
+            border: 2px solid transparent; transition: 0.2s;
         }
         .plan-card.active { border-color: var(--apple-blue); background: rgba(0, 122, 255, 0.1); }
 
         .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
         .tab-item, .tab-platform {
-            flex: 1; padding: 10px; border-radius: 12px;
+            flex: 1; padding: 12px; border-radius: 12px;
             background: rgba(255, 255, 255, 0.05); text-align: center;
-            font-size: 14px; font-weight: 600; cursor: pointer;
+            font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s;
         }
         .tab-item.active, .tab-platform.active { background: #FFFFFF; color: #000000; }
 
         .main-btn {
             background: #FFFFFF; color: #000000;
-            width: 100%; padding: 16px; border-radius: 16px;
-            border: none; font-size: 17px; font-weight: 600;
+            width: 100%; padding: 18px; border-radius: 18px;
+            border: none; font-size: 17px; font-weight: 700; cursor: pointer;
         }
 
-        .instr-text { font-size: 13px; color: var(--text-secondary); line-height: 1.4; display: none; margin-top: 10px;}
+        .instr-text { font-size: 13px; color: var(--text-secondary); line-height: 1.5; display: none; margin-top: 12px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 10px;}
         .instr-text.active { display: block; }
         
         .secondary-btn {
             background: rgba(255, 255, 255, 0.05); color: #FFFFFF;
             width: 100%; padding: 16px; border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.1); font-size: 16px; margin-top: 10px;
+            border: 1px solid rgba(255,255,255,0.1); font-size: 16px; margin-top: 10px; cursor: pointer;
         }
     </style>
 </head>
@@ -97,14 +95,14 @@
 <div class="card">
     <div class="status-badge" id="status-badge">
         <div class="status-dot" id="status-dot"></div>
-        <span id="status-text">Загрузка...</span>
+        <span id="status-text">Синхронизация...</span>
     </div>
     <h1 id="gb-val">0.00 GB</h1>
-    <div class="unlimited-track"><div class="unlimited-fill"></div></div>
+    <div class="unlimited-track"><div class="unlimited-fill" id="flow-bar"></div></div>
     
     <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary);">
-        <span id="sub-label">Статус</span>
-        <span id="days-left-text">-- дн. осталось</span>
+        <span id="sub-label">Аккаунт</span>
+        <span id="days-left-text">вычисляем...</span>
     </div>
 
     <div class="stats-row">
@@ -114,25 +112,25 @@
         </div>
         <div class="stat-item">
             <b>5 / 5</b>
-            <span>Устройства</span>
+            <span>Лимит IP</span>
         </div>
     </div>
 </div>
 
 <div class="card">
-    <h3 style="margin: 0 0 16px 0; font-size: 18px;">Продлить подписку</h3>
-    <div class="plan-card" onclick="selectPlan('1m', this)">
-        <div><b>1 Месяц</b><small style="color:var(--text-secondary); display:block;">Базовый доступ</small></div>
+    <h3 style="margin: 0 0 16px 0; font-size: 18px;">Тарифные планы</h3>
+    <div class="plan-card" id="plan-1m" onclick="selectPlan('1m')">
+        <div><b>1 Месяц</b><small style="color:var(--text-secondary); display:block;">Личный туннель</small></div>
         <div style="font-weight:700">299₽</div>
     </div>
-    <div class="plan-card active" onclick="selectPlan('3m', this)">
+    <div class="plan-card active" id="plan-3m" onclick="selectPlan('3m')">
         <div><b>3 Месяца</b><small style="color:var(--text-secondary); display:block;">Выбор Squizy 🚀</small></div>
         <div style="font-weight:700">799₽</div>
     </div>
 
     <div class="tabs" style="margin-top:15px">
-        <div class="tab-item active" onclick="setMethod('stars', this)">⭐ Stars</div>
-        <div class="tab-item" onclick="setMethod('crypto', this)">⚡ Crypto</div>
+        <div class="tab-item active" id="tab-stars" onclick="setMethod('stars')">⭐ Stars</div>
+        <div class="tab-item" id="tab-crypto" onclick="setMethod('crypto')">⚡ Crypto</div>
     </div>
     <button class="main-btn" onclick="processPayment()">Оплатить сейчас</button>
 </div>
@@ -140,23 +138,23 @@
 <div class="card">
     <h3 style="margin: 0 0 12px 0; font-size: 17px;">Настройка устройств</h3>
     <div class="tabs">
-        <div class="tab-platform active" onclick="setPlatform('ios', this)">iOS</div>
-        <div class="tab-platform" onclick="setPlatform('and', this)">Android</div>
-        <div class="tab-platform" onclick="setPlatform('pc', this)">PC</div>
+        <div class="tab-platform active" id="p-ios" onclick="setPlatform('ios')">iOS</div>
+        <div class="tab-platform" id="p-and" onclick="setPlatform('and')">Android</div>
+        <div class="tab-platform" id="p-pc" onclick="setPlatform('pc')">PC</div>
     </div>
-    <div id="ios-text" class="instr-text active">Установите <b>Hiddify</b>. Скопируйте ключ и выберите "Add from clipboard".</div>
-    <div id="and-text" class="instr-text">Скачайте <b>v2rayNG</b>. Нажмите "+" и выберите "Import from clipboard".</div>
-    <div id="pc-text" class="instr-text">Используйте <b>v2rayN</b>. Нажмите "Servers" -> "Add VLESS from clipboard".</div>
+    <div id="ios-text" class="instr-text active">1. Установите <b>Hiddify</b> из AppStore.<br>2. Скопируйте ключ ниже.<br>3. В приложении нажмите <b>+</b> и <b>Add from clipboard</b>.</div>
+    <div id="and-text" class="instr-text">1. Скачайте <b>v2rayNG</b>.<br>2. Нажмите <b>+</b> вверху экрана.<br>3. Выберите <b>Import from clipboard</b>.</div>
+    <div id="pc-text" class="instr-text">1. Используйте <b>v2rayN</b> или <b>Hiddify Next</b>.<br>2. Импортируйте ключ через буфер обмена (Ctrl+V).</div>
 </div>
 
-<button class="secondary-btn" onclick="copyKey()">📋 Копировать мой ключ</button>
+<button class="secondary-btn" onclick="copyKey()">📋 Копировать VLESS ключ</button>
 
 <script>
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    let selectedPlan = '3m';
-    let selectedMethod = 'stars';
+    let currentPlan = '3m';
+    let currentMethod = 'stars';
 
     const params = new URLSearchParams(window.location.search);
     const expiryTs = parseInt(params.get('expiry_ts')) || 0;
@@ -164,66 +162,95 @@
     const refs = params.get('refs') || '0';
     const key = params.get('key');
 
-    // Заполнение данных
+    // Наполнение данными
     document.getElementById('gb-val').innerText = gb + ' GB';
     document.getElementById('ref-count').innerText = refs;
 
-    // Логика статуса и дней
+    // --- УМНАЯ ЛОГИКА СТАТУСА ---
     const now = Date.now();
     const statusText = document.getElementById('status-text');
     const statusBadge = document.getElementById('status-badge');
     const statusDot = document.getElementById('status-dot');
     const daysLeftText = document.getElementById('days-left-text');
     const subLabel = document.getElementById('sub-label');
+    const flowBar = document.getElementById('flow-bar');
 
-    if (expiryTs > now) {
+    if (expiryTs === 0) {
+        // НОВЫЙ ЮЗЕР / ТЕСТ НЕ ВЗЯТ
+        statusText.innerText = "Готов к защите";
+        statusBadge.style.background = "rgba(0, 122, 255, 0.15)";
+        statusBadge.style.color = "#007AFF";
+        statusDot.className = "status-dot dot-idle";
+        daysLeftText.innerText = "Подписка не найдена";
+        subLabel.innerText = "Новый";
+        flowBar.style.animation = "none";
+        flowBar.style.background = "#333";
+    } else if (expiryTs > now) {
+        // АКТИВЕН
         const diff = Math.ceil((expiryTs - now) / (1000 * 60 * 60 * 24));
         statusText.innerText = "Система защищена";
         statusBadge.style.background = "rgba(48, 209, 88, 0.15)";
         statusBadge.style.color = "#30D158";
         statusDot.className = "status-dot dot-active";
         daysLeftText.innerText = diff + " дн. осталось";
-        subLabel.innerText = "Активен";
+        subLabel.innerText = "Premium";
     } else {
+        // ИСТЕК
         statusText.innerText = "Защита отключена";
         statusBadge.style.background = "rgba(255, 59, 48, 0.15)";
         statusBadge.style.color = "#FF3B30";
         statusDot.className = "status-dot dot-inactive";
         daysLeftText.innerText = "Срок истек";
-        subLabel.innerText = "Не активен";
+        subLabel.innerText = "Истек";
+        flowBar.style.animation = "none";
+        flowBar.style.background = "var(--apple-red)";
     }
 
-    function selectPlan(plan, el) {
-        selectedPlan = plan;
-        document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('active'));
-        el.classList.add('active');
+    // --- ФУНКЦИИ ИНТЕРФЕЙСА ---
+    function selectPlan(plan) {
+        currentPlan = plan;
+        document.getElementById('plan-1m').classList.remove('active');
+        document.getElementById('plan-3m').classList.remove('active');
+        document.getElementById('plan-' + plan).classList.add('active');
         tg.HapticFeedback.impactOccurred('medium');
     }
 
-    function setMethod(method, el) {
-        selectedMethod = method;
-        document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-        el.classList.add('active');
+    function setMethod(method) {
+        currentMethod = method;
+        document.getElementById('tab-stars').classList.remove('active');
+        document.getElementById('tab-crypto').classList.remove('active');
+        document.getElementById('tab-' + method).classList.add('active');
         tg.HapticFeedback.impactOccurred('light');
     }
 
-    function processPayment() {
-        tg.sendData(`buy_${selectedPlan}_${selectedMethod}`);
+    function setPlatform(plat) {
+        const plats = ['ios', 'and', 'pc'];
+        plats.forEach(p => {
+            document.getElementById('p-' + p).classList.remove('active');
+            document.getElementById(p + '-text').classList.remove('active');
+        });
+        document.getElementById('p-' + plat).classList.add('active');
+        document.getElementById(plat + '-text').classList.add('active');
     }
 
-    function setPlatform(p, el) {
-        document.querySelectorAll('.tab-platform').forEach(t => t.classList.remove('active'));
-        el.classList.add('active');
-        document.querySelectorAll('.instr-text').forEach(t => t.classList.remove('active'));
-        document.getElementById(p + '-text').classList.add('active');
+    function processPayment() {
+        tg.sendData(`buy_${currentPlan}_${currentMethod}`);
     }
 
     function copyKey() {
         if (key && key !== 'empty') {
-            navigator.clipboard.writeText(decodeURIComponent(key));
-            tg.showAlert('Ключ скопирован!');
+            const decodedKey = decodeURIComponent(key);
+            // Резервный способ копирования для WebApp
+            const el = document.createElement('textarea');
+            el.value = decodedKey;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            
+            tg.showAlert('Ключ скопирован в буфер обмена!');
         } else {
-            tg.showAlert('Ключ не найден. Получите тестовый доступ.');
+            tg.showAlert('Сначала получите тестовый период или оплатите подписку.');
         }
     }
 </script>
