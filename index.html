@@ -13,6 +13,8 @@
             --text-main: #FFFFFF;
             --text-secondary: #8E8E93;
             --apple-blue: #007AFF;
+            --apple-red: #FF3B30;
+            --apple-green: #30D158;
         }
 
         body {
@@ -46,24 +48,25 @@
             margin-bottom: 16px;
         }
 
-        /* Статус */
+        /* Динамический статус */
         .status-badge {
             display: inline-flex; align-items: center; gap: 6px;
             padding: 6px 12px; border-radius: 20px;
-            background: rgba(48, 209, 88, 0.15); color: #30D158;
             font-size: 13px; font-weight: 600; margin-bottom: 12px;
+            transition: all 0.3s ease;
         }
-        .status-dot { width: 8px; height: 8px; background: #30D158; border-radius: 50%; animation: blink 1.5s infinite; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot-active { background: var(--apple-green); animation: blink 1.5s infinite; }
+        .dot-inactive { background: var(--apple-red); animation: none; }
+        
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
         h1 { font-size: 32px; font-weight: 700; margin: 0; letter-spacing: -1px; }
 
-        /* Полоска */
         .unlimited-track { height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; margin: 16px 0; overflow: hidden; }
         .unlimited-fill { height: 100%; width: 100%; background: var(--accent-gradient); background-size: 200% 100%; animation: flow 3s linear infinite; }
         @keyframes flow { 0% { background-position: 0% 0%; } 100% { background-position: -200% 0%; } }
 
-        /* Тарифы */
         .plan-card {
             background: rgba(255, 255, 255, 0.05);
             padding: 16px; border-radius: 16px; margin-bottom: 10px;
@@ -71,20 +74,16 @@
             border: 2px solid transparent; transition: 0.2s; cursor: pointer;
         }
         .plan-card.active { border-color: var(--apple-blue); background: rgba(0, 122, 255, 0.1); }
-        .plan-title { display: block; font-weight: 700; font-size: 16px; }
-        .plan-desc { font-size: 12px; color: var(--text-secondary); }
         .plan-price { font-weight: 700; font-size: 18px; }
 
-        /* Табы методов и платформ */
         .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-        .tab-item {
+        .tab-item, .tab-platform {
             flex: 1; padding: 10px; border-radius: 12px;
             background: rgba(255, 255, 255, 0.05); text-align: center;
             font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s;
         }
-        .tab-item.active { background: #FFFFFF; color: #000000; }
+        .tab-item.active, .tab-platform.active { background: #FFFFFF; color: #000000; }
 
-        /* Кнопки */
         .main-btn {
             background: #FFFFFF; color: #000000;
             width: 100%; padding: 16px; border-radius: 16px;
@@ -108,15 +107,15 @@
 <div class="glow-bg"></div>
 
 <div class="card">
-    <div class="status-badge">
-        <div class="status-dot"></div>
-        <span>Система защищена</span>
+    <div class="status-badge" id="status-badge">
+        <div class="status-dot" id="status-dot"></div>
+        <span id="status-text">Загрузка...</span>
     </div>
     <h1 id="gb-val">0.00 GB</h1>
     <div class="unlimited-track"><div class="unlimited-fill"></div></div>
     <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary);">
-        <span>Активен</span>
-        <span id="expiry-val">до --.--.----</span>
+        <span id="sub-label">Статус</span>
+        <span id="expiry-val">--.--.----</span>
     </div>
 </div>
 
@@ -124,56 +123,73 @@
     <h3 style="margin: 0 0 16px 0; font-size: 18px;">Продлить подписку</h3>
     
     <div class="plan-card" onclick="selectPlan('1m', this)" id="plan-1m">
-        <div class="plan-info">
-            <span class="plan-title">1 Месяц</span>
-            <span class="plan-desc">Базовый доступ</span>
-        </div>
+        <div><b style="display:block">1 Месяц</b><small style="color:var(--text-secondary)">Базовый доступ</small></div>
         <div class="plan-price">299₽</div>
     </div>
 
     <div class="plan-card active" onclick="selectPlan('3m', this)" id="plan-3m">
-        <div class="plan-info">
-            <span class="plan-title">3 Месяца</span>
-            <span class="plan-desc">Выбор Squizy 🚀</span>
-        </div>
+        <div><b style="display:block">3 Месяца</b><small style="color:var(--text-secondary)">Выбор Squizy 🚀</small></div>
         <div class="plan-price">799₽</div>
     </div>
 
-    <div style="margin: 20px 0 10px 0; font-size: 14px; font-weight: 600;">Способ оплаты:</div>
-    <div class="tabs">
+    <div class="tabs" style="margin-top:15px">
         <div class="tab-item active" onclick="setMethod('stars', this)">⭐ Stars</div>
         <div class="tab-item" onclick="setMethod('crypto', this)">⚡ Crypto</div>
     </div>
-
     <button class="main-btn" onclick="processPayment()">Оплатить сейчас</button>
 </div>
 
 <div class="card">
-    <h3 style="margin: 0 0 12px 0; font-size: 17px;">Настройка</h3>
+    <h3 style="margin: 0 0 12px 0; font-size: 17px;">Настройка устройств</h3>
     <div class="tabs">
-        <div class="tab-platform active" onclick="setPlatform('ios', this)" style="flex:1; padding: 8px; text-align: center; border-radius: 10px; background: rgba(255,255,255,0.05); font-size: 12px;">iOS</div>
-        <div class="tab-platform" onclick="setPlatform('and', this)" style="flex:1; padding: 8px; text-align: center; border-radius: 10px; background: rgba(255,255,255,0.05); font-size: 12px;">Android</div>
-        <div class="tab-platform" onclick="setPlatform('pc', this)" style="flex:1; padding: 8px; text-align: center; border-radius: 10px; background: rgba(255,255,255,0.05); font-size: 12px;">PC</div>
+        <div class="tab-platform active" onclick="setPlatform('ios', this)">iOS</div>
+        <div class="tab-platform" onclick="setPlatform('and', this)">Android</div>
+        <div class="tab-platform" onclick="setPlatform('pc', this)">PC</div>
     </div>
-    <div id="ios-text" class="instr-text active">Используйте <b>Hiddify</b> или <b>Happ</b>. Импорт из буфера.</div>
-    <div id="and-text" class="instr-text">Скачайте <b>v2rayNG</b>. Нажмите "+" -> "Import from clipboard".</div>
-    <div id="pc-text" class="instr-text">Используйте <b>v2rayN</b>. Servers -> Add from clipboard.</div>
+    <div id="ios-text" class="instr-text active">Установите <b>Hiddify</b> из App Store. Скопируйте ключ и выберите "Add from clipboard".</div>
+    <div id="and-text" class="instr-text">Скачайте <b>v2rayNG</b>. Нажмите "+" и выберите "Import from clipboard".</div>
+    <div id="pc-text" class="instr-text">Используйте <b>v2rayN</b>. Нажмите "Servers" -> "Add VLESS server from clipboard".</div>
 </div>
 
-<button class="secondary-btn" onclick="copyKey()">📋 Копировать ключ</button>
+<button class="secondary-btn" onclick="copyKey()">📋 Копировать мой ключ</button>
 
 <script>
     const tg = window.Telegram.WebApp;
     tg.expand();
-    tg.backgroundColor = '#000000';
-    tg.headerColor = '#000000';
 
     let selectedPlan = '3m';
     let selectedMethod = 'stars';
 
+    // Парсим данные из URL
     const params = new URLSearchParams(window.location.search);
-    document.getElementById('gb-val').innerText = (params.get('gb') || '0.00') + ' GB';
-    document.getElementById('expiry-val').innerText = 'до ' + (params.get('expiry') || '--.--.--');
+    const expiry = params.get('expiry') || 'Нет подписки';
+    const gb = params.get('gb') || '0.00';
+    const key = params.get('key');
+
+    // Элементы интерфейса
+    const statusText = document.getElementById('status-text');
+    const statusBadge = document.getElementById('status-badge');
+    const statusDot = document.getElementById('status-dot');
+    const subLabel = document.getElementById('sub-label');
+
+    // Обновляем данные
+    document.getElementById('gb-val').innerText = gb + ' GB';
+    document.getElementById('expiry-val').innerText = expiry === 'Нет подписки' ? expiry : 'до ' + expiry;
+
+    // Логика динамического статуса
+    if (expiry === 'Нет подписки' || expiry.includes('--')) {
+        statusText.innerText = "Защита отключена";
+        statusBadge.style.background = "rgba(255, 59, 48, 0.15)";
+        statusBadge.style.color = "#FF3B30";
+        statusDot.className = "status-dot dot-inactive";
+        subLabel.innerText = "Не активен";
+    } else {
+        statusText.innerText = "Система защищена";
+        statusBadge.style.background = "rgba(48, 209, 88, 0.15)";
+        statusBadge.style.color = "#30D158";
+        statusDot.className = "status-dot dot-active";
+        subLabel.innerText = "Активен";
+    }
 
     function selectPlan(plan, el) {
         tg.HapticFeedback.impactOccurred('medium');
@@ -191,31 +207,27 @@
 
     function processPayment() {
         tg.HapticFeedback.notificationOccurred('success');
-        // Отправляем данные боту: "buy_3m_stars" или "buy_1m_crypto"
         tg.sendData(`buy_${selectedPlan}_${selectedMethod}`);
     }
 
     function setPlatform(p, el) {
         tg.HapticFeedback.impactOccurred('light');
-        document.querySelectorAll('.tab-platform').forEach(t => {
-            t.style.background = 'rgba(255,255,255,0.05)';
-            t.style.color = '#fff';
-        });
-        el.style.background = '#fff';
-        el.style.color = '#000';
+        document.querySelectorAll('.tab-platform').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
         document.querySelectorAll('.instr-text').forEach(t => t.classList.remove('active'));
         document.getElementById(p + '-text').classList.add('active');
     }
 
     function copyKey() {
-        const vlessKey = params.get('key');
-        if (vlessKey) {
-            navigator.clipboard.writeText(vlessKey).then(() => {
+        if (key && key !== 'empty' && key !== 'no_key') {
+            navigator.clipboard.writeText(decodeURIComponent(key)).then(() => {
                 tg.HapticFeedback.notificationOccurred('success');
-                tg.showAlert('Ключ скопирован!');
+                tg.showAlert('Ключ успешно скопирован в буфер обмена!');
             });
         } else {
-            tg.showAlert('Нет активного ключа');
+            tg.showConfirm('У вас пока нет активного ключа. Хотите активировать тестовый период?', (ok) => {
+                if (ok) tg.close();
+            });
         }
     }
 </script>
