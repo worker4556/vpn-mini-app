@@ -111,7 +111,7 @@
             <span>Друзей</span>
         </div>
         <div class="stat-item">
-            <b>5 / 5</b>
+            <b id="ip-limit">1 / 1</b> 
             <span>Лимит Устройств</span>
         </div>
     </div>
@@ -156,17 +156,20 @@
     let currentPlan = '3m';
     let currentMethod = 'stars';
 
+    // Извлекаем параметры из URL
     const params = new URLSearchParams(window.location.search);
     const expiryTs = parseInt(params.get('expiry_ts')) || 0;
     const gb = params.get('gb') || '0.00';
     const refs = params.get('refs') || '0';
+    const ips = params.get('ips') || '1'; // Новая переменная для лимита IP
     const key = params.get('key');
 
     // Наполнение данными
     document.getElementById('gb-val').innerText = gb + ' GB';
     document.getElementById('ref-count').innerText = refs;
+    document.getElementById('ip-limit').innerText = `1 / ${ips}`; // Обновляем лимит динамически
 
-    // --- УМНАЯ ЛОГИКА СТАТУСА ---
+    // --- ЛОГИКА СТАТУСА ---
     const now = Date.now();
     const statusText = document.getElementById('status-text');
     const statusBadge = document.getElementById('status-badge');
@@ -176,7 +179,6 @@
     const flowBar = document.getElementById('flow-bar');
 
     if (expiryTs === 0) {
-        // НОВЫЙ ЮЗЕР / ТЕСТ НЕ ВЗЯТ
         statusText.innerText = "Готов к защите";
         statusBadge.style.background = "rgba(0, 122, 255, 0.15)";
         statusBadge.style.color = "#007AFF";
@@ -186,7 +188,6 @@
         flowBar.style.animation = "none";
         flowBar.style.background = "#333";
     } else if (expiryTs > now) {
-        // АКТИВЕН
         const diff = Math.ceil((expiryTs - now) / (1000 * 60 * 60 * 24));
         statusText.innerText = "Система защищена";
         statusBadge.style.background = "rgba(48, 209, 88, 0.15)";
@@ -195,7 +196,6 @@
         daysLeftText.innerText = diff + " дн. осталось";
         subLabel.innerText = "Premium";
     } else {
-        // ИСТЕК
         statusText.innerText = "Защита отключена";
         statusBadge.style.background = "rgba(255, 59, 48, 0.15)";
         statusBadge.style.color = "#FF3B30";
@@ -240,14 +240,12 @@
     function copyKey() {
         if (key && key !== 'empty') {
             const decodedKey = decodeURIComponent(key);
-            // Резервный способ копирования для WebApp
             const el = document.createElement('textarea');
             el.value = decodedKey;
             document.body.appendChild(el);
             el.select();
             document.execCommand('copy');
             document.body.removeChild(el);
-            
             tg.showAlert('Ключ скопирован в буфер обмена!');
         } else {
             tg.showAlert('Сначала получите тестовый период или оплатите подписку.');
