@@ -28,131 +28,110 @@
 <body class="pb-32">
 
     <header class="p-6 flex justify-between items-center sticky top-0 bg-[#050505]/80 backdrop-blur-xl z-50">
-        <div>
-            <h1 class="text-xl font-extrabold italic tracking-tighter">SILENCE <span class="text-indigo-500 font-black">PRO</span></h1>
-            <p class="text-[9px] text-slate-500 font-bold uppercase tracking-[0.2em]">Next-Gen Encryption</p>
+        <div class="flex items-center gap-3">
+            <div class="relative">
+                <div class="absolute inset-0 bg-indigo-500/20 blur-lg rounded-full"></div>
+                <svg class="relative w-8 h-8 text-indigo-500" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-xl font-extrabold italic tracking-tighter uppercase">Silence <span class="text-indigo-500">Pro</span></h1>
+                <p class="text-[9px] text-slate-500 font-bold uppercase tracking-[0.2em]">AES-256 Protected</p>
+            </div>
         </div>
         <div class="flex flex-col items-end">
-            <div class="flex items-center gap-2 bg-green-500/10 px-3 py-1 rounded-full border border-green-500/20">
-                <div class="status-dot bg-green-500 shadow-[0_0_8px_#22c55e]"></div>
-                <span id="ping_val" class="text-[10px] text-green-500 font-black mono">24ms</span>
+            <div class="flex items-center gap-2 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
+                <div class="status-dot bg-indigo-500 shadow-[0_0_8px_#6366f1]"></div>
+                <span id="ping_val" class="text-[10px] text-indigo-400 font-black mono uppercase">Encrypted</span>
             </div>
         </div>
     </header>
 
     <main class="px-6">
         <section id="tab-home" class="tab-content">
-            <div class="cyber-card p-6 mb-4 relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4 opacity-10"><svg width="80" height="80" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
-                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Активен до</p>
-                <h2 id="expiry_date" class="text-3xl font-black mb-6 italic text-white tracking-tight">...</h2>
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <div class="bg-white/5 p-3 rounded-xl border border-white/5">
-                        <p class="text-[9px] text-slate-500 uppercase font-bold mb-1">Локация</p>
-                        <p class="text-xs font-bold">🇳🇱 Netherlands #1</p>
+            <div class="cyber-card p-6 mb-4 relative overflow-hidden border-indigo-500/10">
+                <div class="absolute -right-4 -top-4 opacity-5 rotate-12">
+                    <svg width="160" height="160" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                </div>
+                
+                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Статус подписки</p>
+                <h2 id="expiry_date" class="text-3xl font-black mb-6 italic tracking-tight">Загрузка...</h2>
+                
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <p class="text-[8px] text-slate-500 uppercase font-black mb-1">Сервер</p>
+                        <p class="text-[11px] font-bold flex items-center gap-1">🇳🇱 NL-Sec #1</p>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-xl border border-white/5">
-                        <p class="text-[9px] text-slate-500 uppercase font-bold mb-1">Протокол</p>
-                        <p class="text-xs font-bold text-indigo-400">VLESS + Reality</p>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <p class="text-[8px] text-slate-500 uppercase font-black mb-1">Защита</p>
+                        <p class="text-[11px] font-bold text-indigo-400">Reality TLS</p>
                     </div>
                 </div>
-                <div class="flex justify-between text-[11px] mb-2 font-bold uppercase tracking-tight">
-                    <span class="text-slate-400">Использовано</span>
+
+                <div class="flex justify-between text-[10px] mb-2 font-black uppercase italic">
+                    <span class="text-slate-400">Traffic Tunneling</span>
                     <span id="traffic" class="text-indigo-400">0.00 GB / ∞</span>
                 </div>
-                <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                    <div id="traffic_bar" class="h-full bg-gradient-to-r from-indigo-600 to-purple-500 w-[15%] shadow-[0_0_15px_rgba(99,102,241,0.6)]"></div>
+                <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div id="traffic_bar" class="h-full bg-indigo-500 w-[20%] shadow-[0_0_15px_#6366f1]"></div>
                 </div>
             </div>
-            <div class="cyber-card p-5 mb-4">
-                <p class="text-[10px] font-black uppercase text-slate-500 mb-3">Personal Access Key</p>
-                <div id="vless_key" class="bg-black/60 p-4 rounded-xl text-[10px] font-mono text-indigo-300/70 break-all border border-indigo-500/10 mb-4 select-all leading-relaxed">vless://empty...</div>
-                <button onclick="copyKey()" class="w-full bg-white text-black font-black py-4 rounded-2xl active:scale-95 transition-all shadow-[0_10px_20px_rgba(255,255,255,0.1)] uppercase text-xs tracking-widest">Скопировать ключ</button>
-            </div>
-        </section>
 
-        <section id="tab-shop" class="tab-content">
-            <h2 class="text-xl font-black mb-6 px-1 italic">Premium Plans</h2>
-            <div class="grid gap-4 mb-8">
-                <div onclick="sendAction('1m')" class="cyber-card p-6 flex justify-between items-center border border-white/5 active:border-indigo-500 group">
-                    <div>
-                        <p class="font-black text-lg">30 Дней</p>
-                        <p class="text-[11px] text-slate-500 mt-1 uppercase font-bold tracking-tighter">Все локации • Безлимит</p>
-                    </div>
-                    <div class="bg-indigo-500/10 px-4 py-2 rounded-xl text-indigo-400 font-black">1 ★</div>
-                </div>
-                <div onclick="sendAction('3m')" class="cyber-card p-6 flex justify-between items-center border-indigo-500/40 bg-indigo-500/5">
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <p class="font-black text-lg italic">90 Дней</p>
-                            <span class="text-[9px] bg-indigo-500 text-white px-2 py-0.5 rounded font-black uppercase">Best Value</span>
-                        </div>
-                        <p class="text-[11px] text-slate-400 uppercase font-bold tracking-tighter italic italic">Экономия 20% • VIP поддержка</p>
-                    </div>
-                    <div class="bg-indigo-500 px-4 py-2 rounded-xl text-white font-black shadow-[0_0_15px_rgba(99,102,241,0.4)]">3 ★</div>
-                </div>
-            </div>
-        </section>
-
-        <section id="tab-guides" class="tab-content">
-            <h2 class="text-xl font-black mb-6 px-1 italic text-indigo-400">Настройка Soft</h2>
-            <div class="space-y-4">
-                <div class="guide-item">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-8 h-8 bg-indigo-500/20 rounded-lg flex items-center justify-center text-indigo-400"></div>
-                        <p class="font-black text-sm uppercase italic">Apple iOS / Mac</p>
-                    </div>
-                    <p class="text-[11px] text-slate-300 mb-3 font-bold uppercase">Рекомендуем: <span class="text-white">V2Box</span></p>
-                    <ol class="text-[11px] text-slate-400 space-y-3 font-medium">
-                        <li>1. Скачайте <b>V2Box/Hiddify/HAPP</b> в App Store.</li>
-                        <li>2. Скопируйте ключ во вкладке "Кабинет".</li>
-                        <li>3. В приложении: <b>Configs</b> → <b>+</b> → <b>Import from Clipboard</b>.</li>
-                        <li>4. Нажмите <b>Connect</b>.</li>
-                    </ol>
-                </div>
-                <div class="guide-item">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center text-green-400 text-[10px]">APK</div>
-                        <p class="font-black text-sm uppercase italic">Android / TV</p>
-                    </div>
-                    <p class="text-[11px] text-slate-300 mb-3 font-bold uppercase">Рекомендуем: <span class="text-white">Hiddify</span> или <span class="text-white">v2rayNG</span></p>
-                    <ol class="text-[11px] text-slate-400 space-y-3 font-medium">
-                        <li>1. Установите <b>Hiddify/HAPP/V2Box</b> из Play Store.</li>
-                        <li>2. Нажмите <b>+ New Profile</b> → <b>Add from Clipboard</b>.</li>
-                        <li>3. Нажмите на кнопку подключения в центре.</li>
-                    </ol>
-                </div>
-                <div class="guide-item border-red-500/30 bg-red-500/5">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center text-white">⌘</div>
-                        <p class="font-black text-sm uppercase italic">Windows PC</p>
-                    </div>
-                    <p class="text-[11px] text-red-500 font-extrabold uppercase mb-3 animate-pulse italic underline">! ЗАПУСКАТЬ СТРОГО ОТ ИМЕНИ АДМИНИСТРАТОРА !</p>
-                    <p class="text-[11px] text-slate-400 leading-relaxed font-medium">Скачайте <b>Hiddify Next</b> или <b>Amnezia VPN</b>. После копирования ключа нажмите <b>Ctrl+V</b>. Согласитесь на установку системных служб.</p>
-                </div>
+            <div class="cyber-card p-5">
+                <p class="text-[10px] font-black uppercase text-slate-500 mb-3 flex justify-between">
+                    <span>Personal Private Key</span>
+                    <span class="text-indigo-500">End-to-End</span>
+                </p>
+                <div id="vless_key" class="bg-black/40 p-4 rounded-xl text-[10px] font-mono text-indigo-300/50 break-all border border-white/5 mb-4 leading-relaxed">...</div>
+                <button onclick="copyKey()" class="w-full bg-indigo-600 text-white font-black py-4 rounded-2xl active:scale-95 transition-all shadow-lg shadow-indigo-500/20 uppercase text-xs tracking-widest">Копировать ключ</button>
             </div>
         </section>
 
         <section id="tab-refs" class="tab-content">
-            <div class="cyber-card p-10 text-center relative overflow-hidden border-indigo-500/20">
-                <div class="text-5xl mb-6">🛰️</div>
-                <h2 class="text-2xl font-black mb-3 italic">Referral Hub</h2>
-                <p class="text-[11px] text-slate-400 mb-8 uppercase font-bold tracking-tighter leading-relaxed">Получай <span class="text-indigo-400">+7 дней</span> к подписке за каждую покупку приглашенного друга.</p>
+            <div class="cyber-card p-8 text-center relative overflow-hidden border-indigo-500/20">
+                <div class="relative inline-block mb-6">
+                    <div class="absolute inset-0 bg-indigo-500/30 blur-2xl rounded-full"></div>
+                    <span class="relative text-5xl">🛰️</span>
+                </div>
+                <h2 class="text-2xl font-black mb-2 italic uppercase">Referral Network</h2>
+                <p class="text-[10px] text-slate-400 mb-8 font-bold leading-relaxed px-4">ПРИГЛАШАЙТЕ ДРУЗЕЙ И ПОЛУЧАЙТЕ <span class="text-indigo-400">+7 ДНЕЙ</span> К ВАШЕМУ ТАРИФУ ЗА КАЖДУЮ ПОКУПКУ</p>
                 
-                <div class="bg-indigo-500/5 border border-indigo-500/10 p-6 rounded-3xl mb-8">
-                    <p class="text-[10px] text-slate-500 uppercase font-black mb-1">Приглашено друзей</p>
-                    <p id="ref_count" class="text-4xl font-black text-white italic">0</p>
+                <div class="bg-white/5 border border-white/5 p-6 rounded-[32px] mb-8">
+                    <p class="text-[9px] text-slate-500 uppercase font-black mb-1 tracking-widest">Active nodes</p>
+                    <p id="ref_count" class="text-5xl font-black text-white italic tracking-tighter">0</p>
                 </div>
                 
                 <div id="ref_container">
-                    <button id="ref_btn" onclick="generateRefLink()" class="w-full bg-indigo-600 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-lg shadow-indigo-500/20 active:scale-95 transition-all">Генерировать ссылку</button>
+                    <button id="ref_btn" onclick="generateRefLink()" class="w-full bg-white text-black py-5 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl active:scale-95 transition-all">Сгенерировать ссылку</button>
                 </div>
-                <p id="copy_hint" class="text-[9px] text-slate-500 mt-4 uppercase font-bold hidden">Нажмите на ссылку выше, чтобы скопировать</p>
+                <p id="copy_hint" class="text-[9px] text-indigo-500 mt-4 uppercase font-black hidden animate-pulse">Ссылка скопирована в буфер обмена!</p>
             </div>
+        </section>
+
+        <section id="tab-shop" class="tab-content">
+             <h2 class="text-xl font-black mb-6 px-1 italic uppercase">Тарифные планы</h2>
+             <div class="grid gap-4">
+                <div onclick="sendAction('1m')" class="cyber-card p-6 flex justify-between items-center border-white/5 active:border-indigo-500 group transition-all">
+                    <div>
+                        <p class="font-black text-lg italic">Premium 30</p>
+                        <p class="text-[10px] text-slate-500 font-bold uppercase">Unmatched Speed • All Nodes</p>
+                    </div>
+                    <div class="bg-indigo-500/10 px-4 py-2 rounded-xl text-indigo-400 font-black border border-indigo-500/20 text-sm">1 ★</div>
+                </div>
+             </div>
+        </section>
+
+        <section id="tab-guides" class="tab-content">
+             <h2 class="text-xl font-black mb-6 px-1 italic text-indigo-400 uppercase">Центр управления</h2>
+             <div class="guide-item border-indigo-500/10">
+                <p class="font-black text-xs uppercase mb-2">Защита Windows</p>
+                <p class="text-[10px] text-slate-400">Используйте Hiddify Next. Запуск от имени администратора обязателен для создания TUN-туннеля.</p>
+             </div>
         </section>
     </main>
 
-    <nav class="fixed bottom-6 left-6 right-6 bg-[#111114]/90 backdrop-blur-2xl border border-white/5 flex justify-around p-3 rounded-[32px] z-50 shadow-2xl">
+    <nav class="fixed bottom-6 left-6 right-6 bg-[#0d0d0f]/90 backdrop-blur-3xl border border-white/5 flex justify-around p-3 rounded-[32px] z-50 shadow-2xl">
         <button onclick="switchTab('home')" id="btn-home" class="nav-btn"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></button>
         <button onclick="switchTab('shop')" id="btn-shop" class="nav-btn"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></button>
         <button onclick="switchTab('guides')" id="btn-guides" class="nav-btn"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></button>
@@ -163,74 +142,73 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
     tg.headerColor = '#050505';
+    tg.backgroundColor = '#050505';
 
     window.onload = function() {
         const params = new URLSearchParams(window.location.search);
         
-        // Авто-таб
+        // Переключаем вкладку
         const targetTab = params.get('tab');
         switchTab(targetTab && document.getElementById('tab-' + targetTab) ? targetTab : 'home');
 
-        // Данные
-        document.getElementById('vless_key').innerText = decodeURIComponent(params.get('key') || 'Ключ не найден');
+        // Данные из URL
+        document.getElementById('vless_key').innerText = decodeURIComponent(params.get('key') || 'Node link not found');
         document.getElementById('traffic').innerText = (params.get('gb') || '0.00') + ' GB / ∞';
         document.getElementById('ref_count').innerText = params.get('refs') || '0';
 
         const expiry = params.get('expiry_ts');
+        const expiryEl = document.getElementById('expiry_date');
         if (expiry && expiry != '0') {
             const d = new Date(parseInt(expiry));
-            document.getElementById('expiry_date').innerText = d.toLocaleDateString('ru-RU', {day:'numeric', month:'long'});
+            expiryEl.innerText = d.toLocaleDateString('ru-RU', {day:'numeric', month:'long'});
+            expiryEl.classList.add('text-white');
         } else {
-            document.getElementById('expiry_date').innerText = "Trial Expired";
-            document.getElementById('expiry_date').style.color = '#ef4444';
+            expiryEl.innerText = "Trial Expired";
+            expiryEl.classList.add('text-red-500');
         }
     };
 
     function switchTab(id) {
-        tg.HapticFeedback.impactOccurred('medium');
+        tg.HapticFeedback.impactOccurred('light');
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active'));
         document.getElementById('tab-' + id).classList.add('active');
         document.getElementById('btn-' + id).classList.add('nav-active');
     }
 
-    // ЛОГИКА РЕФЕРАЛКИ: Генерация прямо в окне
     function generateRefLink() {
-        tg.HapticFeedback.impactOccurred('heavy');
-        
-        // Берем ID пользователя из URL. Бот должен передавать его как ?user_id=12345
         const params = new URLSearchParams(window.location.search);
         const userId = params.get('user_id');
         
         if (!userId) {
-            tg.showAlert('Ошибка: ID пользователя не найден. Попробуйте перезапустить бота.');
+            tg.HapticFeedback.notificationOccurred('error');
+            tg.showAlert('Ошибка авторизации! Перезапустите бота через команду /start.');
             return;
         }
 
-        // Формируем твою правильную ссылку
         const link = `https://t.me/kolipsfv_bot?start=ref${userId}`;
         
-        const btn = document.getElementById('ref_btn');
-        btn.innerText = link; // Выводим ссылку прямо на кнопку
-        btn.classList.replace('bg-indigo-600', 'bg-white/10');
-        btn.classList.add('text-[10px]', 'text-indigo-400', 'lowercase', 'border', 'border-indigo-500/30');
-        
-        document.getElementById('copy_hint').classList.remove('hidden');
-        
-        // Меняем действие кнопки на копирование
-        btn.onclick = function() {
-            navigator.clipboard.writeText(link).then(() => {
-                tg.showAlert('Ссылка для приглашения скопирована!');
-                tg.HapticFeedback.notificationOccurred('success');
-            });
-        };
+        navigator.clipboard.writeText(link).then(() => {
+            tg.HapticFeedback.notificationOccurred('success');
+            document.getElementById('copy_hint').classList.remove('hidden');
+            const btn = document.getElementById('ref_btn');
+            btn.innerText = "СКОПИРОВАНО";
+            btn.classList.add('bg-indigo-600', 'text-white');
+            
+            setTimeout(() => {
+                btn.innerText = "СГЕНЕРИРОВАТЬ ССЫЛКУ";
+                btn.classList.remove('bg-indigo-600', 'text-white');
+                document.getElementById('copy_hint').classList.add('hidden');
+            }, 3000);
+        });
     }
 
     function copyKey() {
         const key = document.getElementById('vless_key').innerText;
+        if(key.includes('not found')) return;
         navigator.clipboard.writeText(key).then(() => {
             tg.HapticFeedback.notificationOccurred('success');
-            tg.showAlert('Ключ скопирован!');
+            tg.showAlert('Ключ скопирован! Вставьте его в Hiddify или V2Box.');
         });
     }
 
@@ -240,10 +218,12 @@
         setTimeout(() => { tg.close(); }, 200);
     }
 
+    // Динамический пинг для вида
     setInterval(() => {
-        const p = Math.floor(Math.random() * 15) + 20;
-        document.getElementById('ping_val').innerText = p + 'ms';
-    }, 3000);
+        const p = Math.floor(Math.random() * 10) + 25;
+        const el = document.getElementById('ping_val');
+        if (el) el.innerText = p + 'ms';
+    }, 4000);
 </script>
 </body>
 </html>
