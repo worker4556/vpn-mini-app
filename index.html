@@ -5,309 +5,195 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Silence VPN Premium</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
         :root {
-            --bg-color: #000000;
-            --card-bg: rgba(28, 28, 30, 0.7);
-            --accent-gradient: linear-gradient(135deg, #007AFF 0%, #00C6FF 100%);
-            --text-main: #FFFFFF;
-            --text-secondary: #8E8E93;
-            --apple-blue: #007AFF;
-            --apple-red: #FF3B30;
-            --apple-green: #30D158;
+            --bg-color: #0f0f12;
+            --card-bg: rgba(255, 255, 255, 0.06);
+            --accent-blue: #007AFF;
+            --accent-purple: #6366f1;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
-            background: var(--bg-color);
-            color: var(--text-main);
-            margin: 0; padding: 0;
-            -webkit-font-smoothing: antialiased;
+            background: radial-gradient(circle at top right, #1e1e2e, #0f0f12);
+            color: white;
+            font-family: 'Inter', -apple-system, sans-serif;
             overflow-x: hidden;
-            padding-bottom: 80px; /* Место под меню */
+            min-height: 100vh;
         }
 
-        /* --- НАВИГАЦИЯ --- */
-        .tab-bar {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: rgba(20, 20, 20, 0.95);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            display: flex; justify-content: space-around;
-            padding: 10px 0 calc(10px + var(--tg-safe-area-inset-bottom, 0));
-            border-top: 1px solid rgba(255,255,255,0.1);
-            z-index: 1000;
-        }
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center;
-            color: var(--text-secondary); font-size: 10px; text-decoration: none;
-            transition: 0.2s; flex: 1;
-        }
-        .nav-item.active { color: var(--apple-blue); }
-        .nav-icon { font-size: 22px; margin-bottom: 4px; }
-
-        /* --- СТРАНИЦЫ --- */
-        .page { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
-        .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- КАРТОЧКИ (Твой стиль) --- */
-        .card {
+        .glass-card {
             background: var(--card-bg);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border-radius: 24px; padding: 20px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 16px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .status-badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 6px 12px; border-radius: 20px;
-            font-size: 13px; font-weight: 600; margin-bottom: 12px;
-        }
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; }
-        .dot-active { background: var(--apple-green); animation: blink 1.5s infinite; }
-        .dot-inactive { background: var(--apple-red); }
-        .dot-idle { background: var(--apple-blue); }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-        h1 { font-size: 32px; font-weight: 700; margin: 0; letter-spacing: -1px; }
-
-        .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .stat-item { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 16px; text-align: center; border: 1px solid rgba(255,255,255,0.03); }
-        .stat-item b { display: block; font-size: 20px; margin-bottom: 2px; }
-        .stat-item span { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
-
-        .unlimited-track { height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; margin: 16px 0; overflow: hidden; }
-        .unlimited-fill { height: 100%; width: 100%; background: var(--accent-gradient); background-size: 200% 100%; animation: flow 3s linear infinite; }
-        @keyframes flow { 0% { background-position: 0% 0%; } 100% { background-position: -200% 0%; } }
-
-        .plan-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 16px; border-radius: 16px; margin-bottom: 10px;
-            display: flex; justify-content: space-between; align-items: center;
-            border: 2px solid transparent; transition: 0.2s;
-        }
-        .plan-card.active { border-color: var(--apple-blue); background: rgba(0, 122, 255, 0.1); }
-
-        .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-        .tab-item, .tab-platform {
-            flex: 1; padding: 12px; border-radius: 12px;
-            background: rgba(255, 255, 255, 0.05); text-align: center;
-            font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s;
-        }
-        .tab-item.active, .tab-platform.active { background: #FFFFFF; color: #000000; }
-
-        .main-btn {
-            background: #FFFFFF; color: #000000;
-            width: 100%; padding: 18px; border-radius: 18px;
-            border: none; font-size: 17px; font-weight: 700; cursor: pointer;
+        .gradient-text {
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .secondary-btn {
-            background: rgba(255, 255, 255, 0.05); color: #FFFFFF;
-            width: 100%; padding: 16px; border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.1); font-size: 16px; margin-top: 10px; cursor: pointer;
+        .status-pulse {
+            width: 10px;
+            height: 10px;
+            background: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #22c55e;
+            animation: pulse 2s infinite;
         }
 
-        .warning-box {
-            background: rgba(255, 59, 48, 0.1); border-left: 4px solid var(--apple-red);
-            padding: 12px; border-radius: 12px; margin: 10px 0; font-size: 14px;
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
         }
 
-        .instr-content { display: none; margin-top: 15px; }
-        .instr-content.active { display: block; }
+        .device-slot {
+            width: 45px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .device-slot.active {
+            background: var(--accent-blue);
+            box-shadow: 0 0 10px var(--accent-blue);
+        }
+
+        .copy-btn:active {
+            transform: scale(0.95);
+            transition: 0.1s;
+        }
+
+        /* Анимация появления контента */
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
     </style>
 </head>
-<body>
+<body class="p-4">
 
-<nav class="tab-bar">
-    <a href="#main" class="nav-item active" onclick="showPage('main')">
-        <span class="nav-icon">💎</span>
-        <span>Кабинет</span>
-    </a>
-    <a href="#instructions" class="nav-item" onclick="showPage('instructions')">
-        <span class="nav-icon">📖</span>
-        <span>Гайды</span>
-    </a>
-    <a href="#referral" class="nav-item" onclick="showPage('referral')">
-        <span class="nav-icon">👥</span>
-        <span>Друзья</span>
-    </a>
-    <a href="#support" class="nav-item" onclick="showPage('support')">
-        <span class="nav-icon">🆘</span>
-        <span>Помощь</span>
-    </a>
-</nav>
-
-<div id="page-main" class="page active">
-    <div class="card">
-        <div class="status-badge" id="status-badge">
-            <div class="status-dot" id="status-dot"></div>
-            <span id="status-text">Загрузка...</span>
-        </div>
-        <h1 id="gb-val">0.00 GB</h1>
-        <div class="unlimited-track"><div class="unlimited-fill" id="flow-bar"></div></div>
-        <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary);">
-            <span id="sub-label">Аккаунт</span>
-            <span id="days-left-text">...</span>
-        </div>
-    </div>
-
-    <div class="card">
-        <h3 style="margin: 0 0 16px 0; font-size: 18px;">Продлить доступ</h3>
-        <div class="plan-card" id="plan-1m" onclick="selectPlan('1m')">
-            <div><b>1 Месяц</b></div>
-            <div style="font-weight:700">1 ⭐</div>
-        </div>
-        <div class="plan-card active" id="plan-3m" onclick="selectPlan('3m')">
-            <div><b>3 Месяца</b></div>
-            <div style="font-weight:700">1 ⭐</div>
-        </div>
-        <div class="tabs" style="margin-top:15px">
-            <div class="tab-item active" id="tab-stars" onclick="setMethod('stars')">⭐ Stars</div>
-            <div class="tab-item" id="tab-crypto" onclick="setMethod('crypto')">⚡ Crypto</div>
-        </div>
-        <button class="main-btn" onclick="processPayment()">Оплатить сейчас</button>
-    </div>
-    
-    <button class="secondary-btn" onclick="copyKey()">📋 Копировать ключ</button>
-</div>
-
-<div id="page-instructions" class="page">
-    <h1>Гайды</h1>
-    <div class="card">
-        <div class="tabs">
-            <div class="tab-platform active" id="p-pc" onclick="setPlatform('pc')">PC</div>
-            <div class="tab-platform" id="p-ios" onclick="setPlatform('ios')">iOS</div>
-            <div class="tab-platform" id="p-and" onclick="setPlatform('and')">Android</div>
-        </div>
-
-        <div id="pc-instr" class="instr-content active">
-            <div class="warning-box">
-                <b>⚠️ ВАЖНО:</b> Запускайте <b>Hiddify Next</b> строго от имени <b>Администратора</b>! Иначе VPN не сможет изменить маршруты.
+    <header class="flex justify-between items-center mb-8 fade-in-up">
+        <div>
+            <h1 class="text-2xl font-bold">Silence <span class="gradient-text">VPN</span></h1>
+            <div class="flex items-center gap-2 mt-1">
+                <div class="status-pulse"></div>
+                <span class="text-xs text-gray-400 font-medium tracking-widest uppercase">Premium Protected</span>
             </div>
-            <p>1. Скачайте Hiddify Next.<br>2. Нажмите правой кнопкой -> Запуск от админа.<br>3. Скопируйте ключ и нажмите "Add from clipboard".</p>
+        </div>
+        <div class="text-right">
+            <span class="text-xs text-gray-500 block mb-1">Ping</span>
+            <span class="text-sm font-mono text-green-400">24ms</span>
+        </div>
+    </header>
+
+    <div class="glass-card p-6 mb-6 fade-in-up" style="animation-delay: 0.1s">
+        <div class="flex justify-between items-start mb-6">
+            <div>
+                <p class="text-gray-400 text-sm mb-1">Истекает через</p>
+                <h2 id="expiry_date" class="text-xl font-semibold">Загрузка...</h2>
+            </div>
+            <div class="bg-indigo-500/20 p-3 rounded-2xl">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
         </div>
 
-        <div id="ios-instr" class="instr-content">
-            <p>1. Установите <b>v2box</b> или <b>Hiddify</b>.<br>2. Скопируйте ваш ключ.<br>3. В приложении нажмите "+" -> Import from Clipboard.</p>
-        </div>
-
-        <div id="and-instr" class="instr-content">
-            <p>1. Установите <b>v2rayNG</b>.<br>2. Скопируйте ключ.<br>3. Нажмите "+" -> Import from Clipboard.</p>
+        <div class="space-y-4">
+            <div class="flex justify-between text-sm">
+                <span class="text-gray-400">Трафик</span>
+                <span id="traffic_usage" class="font-medium">0 GB / ∞</span>
+            </div>
+            <div class="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-500 h-full w-[15%]"></div>
+            </div>
         </div>
     </div>
-</div>
 
-<div id="page-referral" class="page">
-    <h1>Рефералы</h1>
-    <div class="card">
-        <div class="stat-item" style="margin-bottom: 20px;">
-            <b id="ref-count-page">0</b>
-            <span>Приглашенных друзей</span>
+    <div class="glass-card p-6 mb-6 fade-in-up" style="animation-delay: 0.2s">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="font-medium">Устройства</h3>
+            <span class="text-xs bg-white/10 px-2 py-1 rounded-lg text-blue-400" id="device_count">1/5</span>
         </div>
-        <p style="color: var(--text-secondary); font-size: 14px;">Приглашайте друзей и получайте бонусные дни к подписке!</p>
-        <button class="main-btn" onclick="tg.openTelegramLink('https://t.me/share/url?url=ТВОЯ_ССЫЛКА')">📤 Пригласить</button>
+        <div class="flex gap-2">
+            <div class="device-slot active flex-1"></div>
+            <div class="device-slot flex-1"></div>
+            <div class="device-slot flex-1"></div>
+            <div class="device-slot flex-1"></div>
+            <div class="device-slot flex-1"></div>
+        </div>
+        <p class="text-[10px] text-gray-500 mt-3 uppercase tracking-wider text-center">Доступно еще 4 подключения</p>
     </div>
-</div>
 
-<div id="page-support" class="page">
-    <h1>Помощь</h1>
-    <div class="card">
-        <h3>Техподдержка</h3>
-        <p style="color: var(--text-secondary);">Если у вас возникли проблемы с подключением или оплатой, напишите нам.</p>
-        <button class="main-btn" onclick="tg.openTelegramLink('https://t.me/@Squishyyyy555')">💬 Написать админу</button>
+    <div class="glass-card p-6 mb-20 fade-in-up" style="animation-delay: 0.3s">
+        <h3 class="text-sm text-gray-400 mb-3">Ваш персональный ключ</h3>
+        <div class="bg-black/40 p-4 rounded-xl border border-white/5 break-all font-mono text-xs text-indigo-300 mb-4 select-all" id="vless_key">
+            vless://empty...
+        </div>
+        <button onclick="copyKey()" class="copy-btn w-full bg-white text-black font-bold py-4 rounded-2xl flex justify-center items-center gap-2 hover:bg-gray-200 transition-all">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Копировать ключ
+        </button>
     </div>
-</div>
 
-<script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
+    <div class="fixed bottom-6 left-4 right-4 flex gap-3 fade-in-up" style="animation-delay: 0.4s">
+        <button onclick="sendAction('3m')" class="flex-1 bg-indigo-600/20 border border-indigo-500/30 py-4 rounded-2xl font-semibold text-indigo-300 backdrop-blur-lg">
+            Продлить
+        </button>
+        <button onclick="location.hash='/instructions'" class="flex-1 bg-white/5 border border-white/10 py-4 rounded-2xl font-semibold backdrop-blur-lg text-gray-300">
+            Гайды
+        </button>
+    </div>
 
-    let currentPlan = '3m';
-    let currentMethod = 'stars';
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.headerColor = '#0f0f12';
 
-    // Навигация
-    function showPage(pageId) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        
-        document.getElementById('page-' + pageId).classList.add('active');
-        document.querySelector(`[href="#${pageId}"]`).classList.add('active');
-        tg.HapticFeedback.impactOccurred('light');
-    }
-
-    // Слушаем хеш при загрузке (если открыли по ссылке #instructions)
-    window.onload = () => {
-        const hash = window.location.hash.replace('#', '');
-        if (['main', 'instructions', 'referral', 'support'].includes(hash)) {
-            showPage(hash);
-        }
-        syncData();
-    };
-
-    function syncData() {
+        // Получение данных из URL
         const params = new URLSearchParams(window.location.search);
-        const expiryTs = parseInt(params.get('expiry_ts')) || 0;
-        const gb = params.get('gb') || '0.00';
+        const key = params.get('key') || 'Ключ не найден';
+        const expiryTs = params.get('expiry_ts');
+        const gb = params.get('gb') || '0';
         const refs = params.get('refs') || '0';
+
+        // Отображение данных
+        document.getElementById('vless_key').innerText = decodeURIComponent(key);
+        document.getElementById('traffic_usage').innerText = `${gb} GB / ∞`;
         
-        document.getElementById('gb-val').innerText = gb + ' GB';
-        document.getElementById('ref-count-page').innerText = refs;
-
-        const now = Date.now();
-        if (expiryTs > now) {
-            const diff = Math.ceil((expiryTs - now) / (1000 * 60 * 60 * 24));
-            document.getElementById('status-text').innerText = "Система защищена";
-            document.getElementById('status-dot').className = "status-dot dot-active";
-            document.getElementById('days-left-text').innerText = diff + " дн. осталось";
+        if (expiryTs && expiryTs !== '0') {
+            const date = new Date(parseInt(expiryTs));
+            document.getElementById('expiry_date').innerText = date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
         } else {
-            document.getElementById('status-text').innerText = "Защита отключена";
-            document.getElementById('status-dot').className = "status-dot dot-inactive";
-            document.getElementById('days-left-text').innerText = "Срок истек";
+            document.getElementById('expiry_date').innerText = "Не активно";
         }
-    }
 
-    function selectPlan(plan) {
-        currentPlan = plan;
-        document.getElementById('plan-1m').classList.remove('active');
-        document.getElementById('plan-3m').classList.remove('active');
-        document.getElementById('plan-' + plan).classList.add('active');
-    }
-
-    function setMethod(method) {
-        currentMethod = method;
-        document.getElementById('tab-stars').classList.remove('active');
-        document.getElementById('tab-crypto').classList.remove('active');
-        document.getElementById('tab-' + method).classList.add('active');
-    }
-
-    function setPlatform(plat) {
-        document.querySelectorAll('.tab-platform').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.instr-content').forEach(c => c.classList.remove('active'));
-        document.getElementById('p-' + plat).classList.add('active');
-        document.getElementById(plat + '-instr').classList.add('active');
-    }
-
-    function processPayment() {
-        tg.sendData(`buy_${currentPlan}_${currentMethod}`);
-    }
-
-    function copyKey() {
-        const params = new URLSearchParams(window.location.search);
-        const key = params.get('key');
-        if (key && key !== 'empty') {
-            const el = document.createElement('textarea');
-            el.value = decodeURIComponent(key);
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            tg.showAlert('Ключ скопирован!');
-        } else {
-            tg.showAlert('Ключ не найден. Активируйте подписку.');
+        function copyKey() {
+            const keyText = document.getElementById('vless_key').innerText;
+            navigator.clipboard.writeText(keyText).then(() => {
+                tg.HapticFeedback.notificationOccurred('success');
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '✅ Скопировано!';
+                btn.style.background = '#22c55e';
+                btn.style.color = 'white';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = 'white';
+                    btn.style.color = 'black';
+                }, 2000);
+            });
         }
-    }
-</script>
+
+        function sendAction(plan) {
+            tg.HapticFeedback.impactOccurred('medium');
+            tg.sendData(`buy_${plan}_stars`);
+        }
+    </script>
 </body>
 </html>
