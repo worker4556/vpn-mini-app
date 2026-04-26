@@ -10,7 +10,21 @@
     <style>
         :root { --bg: #050505; --card: #0d0d0f; --accent: #6366f1; --success: #22c55e; }
         body { background: var(--bg); color: white; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
-        .cyber-card { background: var(--card); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; }
+        
+        /* Обновленный дизайн карточек (теперь с объемом) */
+        .cyber-card { 
+            background: linear-gradient(145deg, #0f0f12 0%, #08080a 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            border-radius: 24px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        /* Свечение для главного щита */
+        .shield-main {
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.05), transparent), #0d0d0f;
+        }
+
         .tab-content { display: none; animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .tab-content.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -23,6 +37,11 @@
         .guide-item { background: rgba(255,255,255,0.02); border-radius: 18px; padding: 18px; border: 1px solid rgba(255,255,255,0.05); }
         .status-dot { width: 8px; height: 8px; border-radius: 50%; animation: blink 2s infinite; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        
+        .support-card {
+            background: linear-gradient(90deg, #111114 0%, #09090b 100%);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+        }
     </style>
 </head>
 <body class="pb-32">
@@ -49,7 +68,7 @@
 
     <main class="px-6">
         <section id="tab-home" class="tab-content">
-            <div class="cyber-card p-6 mb-4 relative overflow-hidden">
+            <div class="cyber-card shield-main p-6 mb-4 relative overflow-hidden">
                 <div class="absolute top-0 right-0 p-4 opacity-10"><svg width="80" height="80" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
                 <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Активен до</p>
                 <h2 id="expiry_date" class="text-3xl font-black mb-6 italic text-white tracking-tight">Загрузка...</h2>
@@ -71,10 +90,21 @@
                     <div id="traffic_bar" class="h-full bg-gradient-to-r from-indigo-600 to-purple-500 w-[15%] shadow-[0_0_15px_rgba(99,102,241,0.6)]"></div>
                 </div>
             </div>
+
             <div class="cyber-card p-5 mb-4">
                 <p class="text-[10px] font-black uppercase text-slate-500 mb-3">Personal Access Key</p>
                 <div id="vless_key" class="bg-black/60 p-4 rounded-xl text-[10px] font-mono text-indigo-300/70 break-all border border-indigo-500/10 mb-4 select-all leading-relaxed">Загрузка ключа...</div>
                 <button onclick="copyKey()" class="w-full bg-white text-black font-black py-4 rounded-2xl active:scale-95 transition-all shadow-[0_10px_20px_rgba(255,255,255,0.1)] uppercase text-xs tracking-widest">Скопировать ключ</button>
+            </div>
+
+            <div onclick="tg.openTelegramLink('https://t.me/your_admin')" class="cyber-card support-card p-5 flex items-center gap-4 active:scale-[0.98] transition-all cursor-pointer">
+                <div class="w-10 h-10 bg-indigo-500/20 rounded-full flex items-center justify-center border border-indigo-500/20 text-indigo-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                </div>
+                <div>
+                    <p class="text-[10px] text-slate-500 uppercase font-black">Нужна помощь?</p>
+                    <p class="text-xs font-bold text-white">Написать администратору</p>
+                </div>
             </div>
         </section>
 
@@ -145,12 +175,10 @@
                 <div class="text-5xl mb-6 shadow-2xl">🛰️</div>
                 <h2 class="text-2xl font-black mb-3 italic uppercase tracking-tighter">Referral Hub</h2>
                 <p class="text-[11px] text-slate-400 mb-8 uppercase font-bold tracking-tighter leading-relaxed">Получай <span class="text-indigo-400">+7 дней</span> к подписке за каждую покупку друга.</p>
-                
                 <div class="bg-indigo-500/5 border border-indigo-500/10 p-6 rounded-3xl mb-8">
                     <p class="text-[10px] text-slate-500 uppercase font-black mb-1">Приглашено друзей</p>
                     <p id="ref_count" class="text-4xl font-black text-white italic">0</p>
                 </div>
-                
                 <div id="ref_container">
                     <button id="ref_btn" onclick="generateRefLink()" class="w-full bg-indigo-600 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-lg shadow-indigo-500/20 active:scale-95 transition-all text-white">Генерировать ссылку</button>
                 </div>
@@ -173,12 +201,9 @@
 
     window.onload = function() {
         const params = new URLSearchParams(window.location.search);
-        
-        // Авто-вкладка
         const targetTab = params.get('tab');
         switchTab(targetTab && document.getElementById('tab-' + targetTab) ? targetTab : 'home');
 
-        // Рендер данных из URL
         const key = params.get('key');
         document.getElementById('vless_key').innerText = key ? decodeURIComponent(key) : 'Ключ станет доступен после покупки';
         document.getElementById('traffic').innerText = (params.get('gb') || '0.00') + ' GB / ∞';
@@ -208,15 +233,11 @@
         const params = new URLSearchParams(window.location.search);
         const userId = params.get('user_id') || '0000';
         const link = `https://t.me/kolipsfv_bot?start=ref${userId}`;
-        
         const btn = document.getElementById('ref_btn');
         btn.innerText = link;
         btn.classList.replace('bg-indigo-600', 'bg-white/10');
         btn.classList.add('text-[10px]', 'text-indigo-400', 'lowercase', 'border', 'border-indigo-500/20');
-        
         document.getElementById('copy_hint').classList.remove('hidden');
-        
-        // Переопределяем клик на копирование
         btn.onclick = function() {
             navigator.clipboard.writeText(link).then(() => {
                 tg.HapticFeedback.notificationOccurred('success');
@@ -240,7 +261,6 @@
         setTimeout(() => { tg.close(); }, 200);
     }
 
-    // Имитация пинга
     setInterval(() => {
         const p = Math.floor(Math.random() * 10) + 20;
         document.getElementById('ping_val').innerText = p + 'ms';
