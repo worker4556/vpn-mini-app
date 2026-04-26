@@ -200,13 +200,24 @@
         </button>
     </nav>
 
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.headerColor = '#050505';
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    tg.headerColor = '#050505';
 
-        // Инициализация данных из URL
+    // Функция инициализации при загрузке страницы
+    window.onload = function() {
         const params = new URLSearchParams(window.location.search);
+        
+        // --- ЛОГИКА АВТО-ПЕРЕКЛЮЧЕНИЯ ВКЛАДКИ ---
+        const targetTab = params.get('tab'); // Ищем параметр ?tab= в ссылке
+        if (targetTab && document.getElementById('tab-' + targetTab)) {
+            switchTab(targetTab);
+        } else {
+            switchTab('home'); // По умолчанию открываем кабинет
+        }
+
+        // Заполнение данных
         document.getElementById('vless_key').innerText = decodeURIComponent(params.get('key') || 'Node link not found');
         document.getElementById('traffic').innerText = (params.get('gb') || '0.00') + ' GB / ∞';
         document.getElementById('ref_count').innerText = params.get('refs') || '0';
@@ -219,41 +230,44 @@
             document.getElementById('expiry_date').innerText = "Trial Expired";
             document.getElementById('expiry_date').style.color = '#ef4444';
         }
+    };
 
-        // Логика вкладок
-        function switchTab(id) {
-            tg.HapticFeedback.impactOccurred('medium');
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active'));
-            document.getElementById('tab-' + id).classList.add('active');
-            document.getElementById('btn-' + id).classList.add('nav-active');
+    // Обновленная функция переключения вкладок
+    function switchTab(id) {
+        tg.HapticFeedback.impactOccurred('medium');
+        
+        // Скрываем все вкладки и убираем активные стили с кнопок
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active'));
+        
+        // Показываем нужную
+        const targetContent = document.getElementById('tab-' + id);
+        const targetBtn = document.getElementById('btn-' + id);
+        
+        if (targetContent && targetBtn) {
+            targetContent.classList.add('active');
+            targetBtn.classList.add('nav-active');
         }
+    }
 
-        // Копирование
-        function copyKey() {
-            const key = document.getElementById('vless_key').innerText;
-            navigator.clipboard.writeText(key).then(() => {
-                tg.HapticFeedback.notificationOccurred('success');
-                tg.showAlert('Ключ скопирован! Откройте V2Box или v2rayNG для импорта.');
-            });
-        }
+    function copyKey() {
+        const key = document.getElementById('vless_key').innerText;
+        navigator.clipboard.writeText(key).then(() => {
+            tg.HapticFeedback.notificationOccurred('success');
+            tg.showAlert('Ключ скопирован!');
+        });
+    }
 
-        // Главное: Отправка действия и ЗАКРЫТИЕ WebApp
-        function sendAction(plan) {
-            tg.HapticFeedback.impactOccurred('heavy');
-            // Отправляем данные в бот
-            tg.sendData(`buy_${plan}_stars`);
-            // Закрываем WebApp через 200мс, чтобы пользователь успел увидеть нажатие
-            setTimeout(() => {
-                tg.close();
-            }, 200);
-        }
+    function sendAction(plan) {
+        tg.HapticFeedback.impactOccurred('heavy');
+        tg.sendData(`buy_${plan}_stars`);
+        setTimeout(() => { tg.close(); }, 200);
+    }
 
-        // Динамический пинг
-        setInterval(() => {
-            const p = Math.floor(Math.random() * 15) + 20;
-            document.getElementById('ping_val').innerText = p + 'ms';
-        }, 3000);
-    </script>
-</body>
+    // Имитация пинга
+    setInterval(() => {
+        const p = Math.floor(Math.random() * 15) + 20;
+        document.getElementById('ping_val').innerText = p + 'ms';
+    }, 3000);
+</script>
 </html>
