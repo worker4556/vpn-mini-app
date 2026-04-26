@@ -20,14 +20,37 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
             background: var(--bg-color);
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(0, 122, 255, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(0, 198, 255, 0.1) 0px, transparent 50%);
             color: var(--text-main);
-            margin: 0; padding: 20px;
+            margin: 0; padding: 0;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            padding-bottom: 80px; /* Место под меню */
         }
 
+        /* --- НАВИГАЦИЯ --- */
+        .tab-bar {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(20, 20, 20, 0.95);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; justify-content: space-around;
+            padding: 10px 0 calc(10px + var(--tg-safe-area-inset-bottom, 0));
+            border-top: 1px solid rgba(255,255,255,0.1);
+            z-index: 1000;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center;
+            color: var(--text-secondary); font-size: 10px; text-decoration: none;
+            transition: 0.2s; flex: 1;
+        }
+        .nav-item.active { color: var(--apple-blue); }
+        .nav-icon { font-size: 22px; margin-bottom: 4px; }
+
+        /* --- СТРАНИЦЫ --- */
+        .page { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- КАРТОЧКИ (Твой стиль) --- */
         .card {
             background: var(--card-bg);
             backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
@@ -80,74 +103,122 @@
             border: none; font-size: 17px; font-weight: 700; cursor: pointer;
         }
 
-        .instr-text { font-size: 13px; color: var(--text-secondary); line-height: 1.5; display: none; margin-top: 12px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 10px;}
-        .instr-text.active { display: block; }
-        
         .secondary-btn {
             background: rgba(255, 255, 255, 0.05); color: #FFFFFF;
             width: 100%; padding: 16px; border-radius: 16px;
             border: 1px solid rgba(255,255,255,0.1); font-size: 16px; margin-top: 10px; cursor: pointer;
         }
+
+        .warning-box {
+            background: rgba(255, 59, 48, 0.1); border-left: 4px solid var(--apple-red);
+            padding: 12px; border-radius: 12px; margin: 10px 0; font-size: 14px;
+        }
+
+        .instr-content { display: none; margin-top: 15px; }
+        .instr-content.active { display: block; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <div class="status-badge" id="status-badge">
-        <div class="status-dot" id="status-dot"></div>
-        <span id="status-text">Синхронизация...</span>
+<nav class="tab-bar">
+    <a href="#main" class="nav-item active" onclick="showPage('main')">
+        <span class="nav-icon">💎</span>
+        <span>Кабинет</span>
+    </a>
+    <a href="#instructions" class="nav-item" onclick="showPage('instructions')">
+        <span class="nav-icon">📖</span>
+        <span>Гайды</span>
+    </a>
+    <a href="#referral" class="nav-item" onclick="showPage('referral')">
+        <span class="nav-icon">👥</span>
+        <span>Друзья</span>
+    </a>
+    <a href="#support" class="nav-item" onclick="showPage('support')">
+        <span class="nav-icon">🆘</span>
+        <span>Помощь</span>
+    </a>
+</nav>
+
+<div id="page-main" class="page active">
+    <div class="card">
+        <div class="status-badge" id="status-badge">
+            <div class="status-dot" id="status-dot"></div>
+            <span id="status-text">Загрузка...</span>
+        </div>
+        <h1 id="gb-val">0.00 GB</h1>
+        <div class="unlimited-track"><div class="unlimited-fill" id="flow-bar"></div></div>
+        <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary);">
+            <span id="sub-label">Аккаунт</span>
+            <span id="days-left-text">...</span>
+        </div>
     </div>
-    <h1 id="gb-val">0.00 GB</h1>
-    <div class="unlimited-track"><div class="unlimited-fill" id="flow-bar"></div></div>
+
+    <div class="card">
+        <h3 style="margin: 0 0 16px 0; font-size: 18px;">Продлить доступ</h3>
+        <div class="plan-card" id="plan-1m" onclick="selectPlan('1m')">
+            <div><b>1 Месяц</b></div>
+            <div style="font-weight:700">1 ⭐</div>
+        </div>
+        <div class="plan-card active" id="plan-3m" onclick="selectPlan('3m')">
+            <div><b>3 Месяца</b></div>
+            <div style="font-weight:700">1 ⭐</div>
+        </div>
+        <div class="tabs" style="margin-top:15px">
+            <div class="tab-item active" id="tab-stars" onclick="setMethod('stars')">⭐ Stars</div>
+            <div class="tab-item" id="tab-crypto" onclick="setMethod('crypto')">⚡ Crypto</div>
+        </div>
+        <button class="main-btn" onclick="processPayment()">Оплатить сейчас</button>
+    </div>
     
-    <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary);">
-        <span id="sub-label">Аккаунт</span>
-        <span id="days-left-text">вычисляем...</span>
-    </div>
+    <button class="secondary-btn" onclick="copyKey()">📋 Копировать ключ</button>
+</div>
 
-    <div class="stats-row">
-        <div class="stat-item">
-            <b id="ref-count">0</b>
-            <span>Друзей</span>
+<div id="page-instructions" class="page">
+    <h1>Гайды</h1>
+    <div class="card">
+        <div class="tabs">
+            <div class="tab-platform active" id="p-pc" onclick="setPlatform('pc')">PC</div>
+            <div class="tab-platform" id="p-ios" onclick="setPlatform('ios')">iOS</div>
+            <div class="tab-platform" id="p-and" onclick="setPlatform('and')">Android</div>
         </div>
-        <div class="stat-item">
-            <b id="ip-limit">1 / 1</b> 
-            <span>Лимит Устройств</span>
+
+        <div id="pc-instr" class="instr-content active">
+            <div class="warning-box">
+                <b>⚠️ ВАЖНО:</b> Запускайте <b>Hiddify Next</b> строго от имени <b>Администратора</b>! Иначе VPN не сможет изменить маршруты.
+            </div>
+            <p>1. Скачайте Hiddify Next.<br>2. Нажмите правой кнопкой -> Запуск от админа.<br>3. Скопируйте ключ и нажмите "Add from clipboard".</p>
+        </div>
+
+        <div id="ios-instr" class="instr-content">
+            <p>1. Установите <b>v2box</b> или <b>Hiddify</b>.<br>2. Скопируйте ваш ключ.<br>3. В приложении нажмите "+" -> Import from Clipboard.</p>
+        </div>
+
+        <div id="and-instr" class="instr-content">
+            <p>1. Установите <b>v2rayNG</b>.<br>2. Скопируйте ключ.<br>3. Нажмите "+" -> Import from Clipboard.</p>
         </div>
     </div>
 </div>
 
-<div class="card">
-    <h3 style="margin: 0 0 16px 0; font-size: 18px;">Тарифные планы</h3>
-    <div class="plan-card" id="plan-1m" onclick="selectPlan('1m')">
-        <div><b>1 Месяц</b><small style="color:var(--text-secondary); display:block;">Личный туннель</small></div>
-        <div style="font-weight:700">299₽</div>
+<div id="page-referral" class="page">
+    <h1>Рефералы</h1>
+    <div class="card">
+        <div class="stat-item" style="margin-bottom: 20px;">
+            <b id="ref-count-page">0</b>
+            <span>Приглашенных друзей</span>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 14px;">Приглашайте друзей и получайте бонусные дни к подписке!</p>
+        <button class="main-btn" onclick="tg.openTelegramLink('https://t.me/share/url?url=ТВОЯ_ССЫЛКА')">📤 Пригласить</button>
     </div>
-    <div class="plan-card active" id="plan-3m" onclick="selectPlan('3m')">
-        <div><b>3 Месяца</b><small style="color:var(--text-secondary); display:block;">Выбор Squizy 🚀</small></div>
-        <div style="font-weight:700">799₽</div>
-    </div>
-
-    <div class="tabs" style="margin-top:15px">
-        <div class="tab-item active" id="tab-stars" onclick="setMethod('stars')">⭐ Stars</div>
-        <div class="tab-item" id="tab-crypto" onclick="setMethod('crypto')">⚡ Crypto</div>
-    </div>
-    <button class="main-btn" onclick="processPayment()">Оплатить сейчас</button>
 </div>
 
-<div class="card">
-    <h3 style="margin: 0 0 12px 0; font-size: 17px;">Настройка устройств</h3>
-    <div class="tabs">
-        <div class="tab-platform active" id="p-ios" onclick="setPlatform('ios')">iOS</div>
-        <div class="tab-platform" id="p-and" onclick="setPlatform('and')">Android</div>
-        <div class="tab-platform" id="p-pc" onclick="setPlatform('pc')">PC</div>
+<div id="page-support" class="page">
+    <h1>Помощь</h1>
+    <div class="card">
+        <h3>Техподдержка</h3>
+        <p style="color: var(--text-secondary);">Если у вас возникли проблемы с подключением или оплатой, напишите нам.</p>
+        <button class="main-btn" onclick="tg.openTelegramLink('https://t.me/Squizy_Admin')">💬 Написать админу</button>
     </div>
-    <div id="ios-text" class="instr-text active">1. Установите <b>Hiddify</b> из AppStore.<br>2. Скопируйте ключ ниже.<br>3. В приложении нажмите <b>+</b> и <b>Add from clipboard</b>.</div>
-    <div id="and-text" class="instr-text">1. Скачайте <b>v2rayNG</b>.<br>2. Нажмите <b>+</b> вверху экрана.<br>3. Выберите <b>Import from clipboard</b>.</div>
-    <div id="pc-text" class="instr-text">1. Используйте <b>v2rayN</b> или <b>Hiddify Next</b>.<br>2. Импортируйте ключ через буфер обмена (Ctrl+V).</div>
 </div>
-
-<button class="secondary-btn" onclick="copyKey()">📋 Копировать VLESS ключ</button>
 
 <script>
     const tg = window.Telegram.WebApp;
@@ -156,63 +227,52 @@
     let currentPlan = '3m';
     let currentMethod = 'stars';
 
-    // Извлекаем параметры из URL
-    const params = new URLSearchParams(window.location.search);
-    const expiryTs = parseInt(params.get('expiry_ts')) || 0;
-    const gb = params.get('gb') || '0.00';
-    const refs = params.get('refs') || '0';
-    const ips = params.get('ips') || '1'; // Новая переменная для лимита IP
-    const key = params.get('key');
-
-    // Наполнение данными
-    document.getElementById('gb-val').innerText = gb + ' GB';
-    document.getElementById('ref-count').innerText = refs;
-    document.getElementById('ip-limit').innerText = `1 / ${ips}`; // Обновляем лимит динамически
-
-    // --- ЛОГИКА СТАТУСА ---
-    const now = Date.now();
-    const statusText = document.getElementById('status-text');
-    const statusBadge = document.getElementById('status-badge');
-    const statusDot = document.getElementById('status-dot');
-    const daysLeftText = document.getElementById('days-left-text');
-    const subLabel = document.getElementById('sub-label');
-    const flowBar = document.getElementById('flow-bar');
-
-    if (expiryTs === 0) {
-        statusText.innerText = "Готов к защите";
-        statusBadge.style.background = "rgba(0, 122, 255, 0.15)";
-        statusBadge.style.color = "#007AFF";
-        statusDot.className = "status-dot dot-idle";
-        daysLeftText.innerText = "Подписка не найдена";
-        subLabel.innerText = "Новый";
-        flowBar.style.animation = "none";
-        flowBar.style.background = "#333";
-    } else if (expiryTs > now) {
-        const diff = Math.ceil((expiryTs - now) / (1000 * 60 * 60 * 24));
-        statusText.innerText = "Система защищена";
-        statusBadge.style.background = "rgba(48, 209, 88, 0.15)";
-        statusBadge.style.color = "#30D158";
-        statusDot.className = "status-dot dot-active";
-        daysLeftText.innerText = diff + " дн. осталось";
-        subLabel.innerText = "Premium";
-    } else {
-        statusText.innerText = "Защита отключена";
-        statusBadge.style.background = "rgba(255, 59, 48, 0.15)";
-        statusBadge.style.color = "#FF3B30";
-        statusDot.className = "status-dot dot-inactive";
-        daysLeftText.innerText = "Срок истек";
-        subLabel.innerText = "Истек";
-        flowBar.style.animation = "none";
-        flowBar.style.background = "var(--apple-red)";
+    // Навигация
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        
+        document.getElementById('page-' + pageId).classList.add('active');
+        document.querySelector(`[href="#${pageId}"]`).classList.add('active');
+        tg.HapticFeedback.impactOccurred('light');
     }
 
-    // --- ФУНКЦИИ ИНТЕРФЕЙСА ---
+    // Слушаем хеш при загрузке (если открыли по ссылке #instructions)
+    window.onload = () => {
+        const hash = window.location.hash.replace('#', '');
+        if (['main', 'instructions', 'referral', 'support'].includes(hash)) {
+            showPage(hash);
+        }
+        syncData();
+    };
+
+    function syncData() {
+        const params = new URLSearchParams(window.location.search);
+        const expiryTs = parseInt(params.get('expiry_ts')) || 0;
+        const gb = params.get('gb') || '0.00';
+        const refs = params.get('refs') || '0';
+        
+        document.getElementById('gb-val').innerText = gb + ' GB';
+        document.getElementById('ref-count-page').innerText = refs;
+
+        const now = Date.now();
+        if (expiryTs > now) {
+            const diff = Math.ceil((expiryTs - now) / (1000 * 60 * 60 * 24));
+            document.getElementById('status-text').innerText = "Система защищена";
+            document.getElementById('status-dot').className = "status-dot dot-active";
+            document.getElementById('days-left-text').innerText = diff + " дн. осталось";
+        } else {
+            document.getElementById('status-text').innerText = "Защита отключена";
+            document.getElementById('status-dot').className = "status-dot dot-inactive";
+            document.getElementById('days-left-text').innerText = "Срок истек";
+        }
+    }
+
     function selectPlan(plan) {
         currentPlan = plan;
         document.getElementById('plan-1m').classList.remove('active');
         document.getElementById('plan-3m').classList.remove('active');
         document.getElementById('plan-' + plan).classList.add('active');
-        tg.HapticFeedback.impactOccurred('medium');
     }
 
     function setMethod(method) {
@@ -220,17 +280,13 @@
         document.getElementById('tab-stars').classList.remove('active');
         document.getElementById('tab-crypto').classList.remove('active');
         document.getElementById('tab-' + method).classList.add('active');
-        tg.HapticFeedback.impactOccurred('light');
     }
 
     function setPlatform(plat) {
-        const plats = ['ios', 'and', 'pc'];
-        plats.forEach(p => {
-            document.getElementById('p-' + p).classList.remove('active');
-            document.getElementById(p + '-text').classList.remove('active');
-        });
+        document.querySelectorAll('.tab-platform').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.instr-content').forEach(c => c.classList.remove('active'));
         document.getElementById('p-' + plat).classList.add('active');
-        document.getElementById(plat + '-text').classList.add('active');
+        document.getElementById(plat + '-instr').classList.add('active');
     }
 
     function processPayment() {
@@ -238,17 +294,18 @@
     }
 
     function copyKey() {
+        const params = new URLSearchParams(window.location.search);
+        const key = params.get('key');
         if (key && key !== 'empty') {
-            const decodedKey = decodeURIComponent(key);
             const el = document.createElement('textarea');
-            el.value = decodedKey;
+            el.value = decodeURIComponent(key);
             document.body.appendChild(el);
             el.select();
             document.execCommand('copy');
             document.body.removeChild(el);
-            tg.showAlert('Ключ скопирован в буфер обмена!');
+            tg.showAlert('Ключ скопирован!');
         } else {
-            tg.showAlert('Сначала получите тестовый период или оплатите подписку.');
+            tg.showAlert('Ключ не найден. Активируйте подписку.');
         }
     }
 </script>
