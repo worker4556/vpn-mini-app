@@ -10,22 +10,16 @@
     <style>
         :root { --bg: #050505; --card: #0d0d0f; --accent: #6366f1; --success: #22c55e; }
         body { background: var(--bg); color: white; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
-        
         .cyber-card { background: var(--card); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; }
-        
-        /* Анимации вкладок */
         .tab-content { display: none; animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .tab-content.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Анимация таб-бара */
         .nav-btn { position: relative; transition: all 0.3s ease; color: #475569; }
         .nav-active { color: var(--accent); transform: translateY(-8px); }
         .nav-active::after {
             content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
             width: 5px; height: 5px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent);
         }
-
         .guide-item { background: rgba(255,255,255,0.02); border-radius: 18px; padding: 18px; border: 1px solid rgba(255,255,255,0.05); }
         .status-dot { width: 8px; height: 8px; border-radius: 50%; animation: blink 2s infinite; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
@@ -47,14 +41,11 @@
     </header>
 
     <main class="px-6">
-        
-        <section id="tab-home" class="tab-content active">
+        <section id="tab-home" class="tab-content">
             <div class="cyber-card p-6 mb-4 relative overflow-hidden">
                 <div class="absolute top-0 right-0 p-4 opacity-10"><svg width="80" height="80" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
-                
                 <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Активен до</p>
                 <h2 id="expiry_date" class="text-3xl font-black mb-6 italic text-white tracking-tight">...</h2>
-                
                 <div class="grid grid-cols-2 gap-4 mb-6">
                     <div class="bg-white/5 p-3 rounded-xl border border-white/5">
                         <p class="text-[9px] text-slate-500 uppercase font-bold mb-1">Локация</p>
@@ -65,7 +56,6 @@
                         <p class="text-xs font-bold text-indigo-400">VLESS + Reality</p>
                     </div>
                 </div>
-
                 <div class="flex justify-between text-[11px] mb-2 font-bold uppercase tracking-tight">
                     <span class="text-slate-400">Использовано</span>
                     <span id="traffic" class="text-indigo-400">0.00 GB / ∞</span>
@@ -74,96 +64,71 @@
                     <div id="traffic_bar" class="h-full bg-gradient-to-r from-indigo-600 to-purple-500 w-[15%] shadow-[0_0_15px_rgba(99,102,241,0.6)]"></div>
                 </div>
             </div>
-
-            <div class="cyber-card p-5 mb-4">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-[10px] font-black uppercase text-slate-500 tracking-widest">Multi-Device Slots</span>
-                    <span class="text-[10px] font-black text-indigo-400" id="device_count">1 / 5</span>
-                </div>
-                <div class="flex gap-2">
-                    <div class="h-1.5 flex-1 bg-indigo-500 rounded-full shadow-[0_0_10px_var(--accent)]"></div>
-                    <div class="h-1.5 flex-1 bg-white/10 rounded-full"></div>
-                    <div class="h-1.5 flex-1 bg-white/10 rounded-full"></div>
-                    <div class="h-1.5 flex-1 bg-white/10 rounded-full"></div>
-                    <div class="h-1.5 flex-1 bg-white/10 rounded-full"></div>
-                </div>
-            </div>
-
             <div class="cyber-card p-5 mb-4">
                 <p class="text-[10px] font-black uppercase text-slate-500 mb-3">Personal Access Key</p>
                 <div id="vless_key" class="bg-black/60 p-4 rounded-xl text-[10px] font-mono text-indigo-300/70 break-all border border-indigo-500/10 mb-4 select-all leading-relaxed">vless://empty...</div>
-                <button onclick="copyKey()" class="w-full bg-white text-black font-black py-4 rounded-2xl active:scale-95 transition-all shadow-[0_10px_20px_rgba(255,255,255,0.1)] uppercase text-xs tracking-widest">Скопировать конфигурацию</button>
-            </div>
-
-            <div class="mt-8 border-t border-white/5 pt-6 opacity-40">
-                <div class="flex items-center gap-3 px-2">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                    <span class="text-[10px] font-bold uppercase tracking-widest">Administrator Access Required</span>
-                </div>
+                <button onclick="copyKey()" class="w-full bg-white text-black font-black py-4 rounded-2xl active:scale-95 transition-all shadow-[0_10px_20px_rgba(255,255,255,0.1)] uppercase text-xs tracking-widest">Скопировать ключ</button>
             </div>
         </section>
 
         <section id="tab-shop" class="tab-content">
             <h2 class="text-xl font-black mb-6 px-1 italic">Premium Plans</h2>
             <div class="grid gap-4 mb-8">
-                <div onclick="sendAction('1m')" class="cyber-card p-6 flex justify-between items-center border border-white/5 active:border-indigo-500 transition-all group">
+                <div onclick="sendAction('1m')" class="cyber-card p-6 flex justify-between items-center border border-white/5 active:border-indigo-500 group">
                     <div>
                         <p class="font-black text-lg">30 Дней</p>
                         <p class="text-[11px] text-slate-500 mt-1 uppercase font-bold tracking-tighter">Все локации • Безлимит</p>
                     </div>
-                    <div class="bg-indigo-500/10 px-4 py-2 rounded-xl border border-indigo-500/20 group-active:bg-indigo-500 group-active:text-white transition-colors text-indigo-400 font-black">1 ★</div>
+                    <div class="bg-indigo-500/10 px-4 py-2 rounded-xl text-indigo-400 font-black">1 ★</div>
                 </div>
-                <div onclick="sendAction('3m')" class="cyber-card p-6 flex justify-between items-center border-indigo-500/40 bg-indigo-500/5 active:scale-[0.98] transition-all">
+                <div onclick="sendAction('3m')" class="cyber-card p-6 flex justify-between items-center border-indigo-500/40 bg-indigo-500/5">
                     <div>
                         <div class="flex items-center gap-2 mb-1">
                             <p class="font-black text-lg italic">90 Дней</p>
                             <span class="text-[9px] bg-indigo-500 text-white px-2 py-0.5 rounded font-black uppercase">Best Value</span>
                         </div>
-                        <p class="text-[11px] text-slate-400 uppercase font-bold tracking-tighter italic">Экономия 20% • VIP поддержка</p>
+                        <p class="text-[11px] text-slate-400 uppercase font-bold tracking-tighter italic italic">Экономия 20% • VIP поддержка</p>
                     </div>
                     <div class="bg-indigo-500 px-4 py-2 rounded-xl text-white font-black shadow-[0_0_15px_rgba(99,102,241,0.4)]">3 ★</div>
                 </div>
             </div>
-
-            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest text-center mb-4">Direct Support</p>
-            <button onclick="tg.openTelegramLink('https://t.me/@Squishyyyy555')" class="w-full bg-white/5 border border-white/10 py-5 rounded-2xl font-black text-xs uppercase tracking-widest mb-4 hover:bg-white/10 transition-all">Связаться с владельцем</button>
         </section>
 
         <section id="tab-guides" class="tab-content">
-            <h2 class="text-xl font-black mb-6 px-1 italic">Setup Guide</h2>
+            <h2 class="text-xl font-black mb-6 px-1 italic text-indigo-400">Настройка Soft</h2>
             <div class="space-y-4">
                 <div class="guide-item">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-8 h-8 bg-indigo-500/20 rounded-lg flex items-center justify-center text-indigo-400"></div>
-                        <p class="font-black text-sm uppercase">Apple iOS</p>
+                        <p class="font-black text-sm uppercase italic">Apple iOS / Mac</p>
                     </div>
+                    <p class="text-[11px] text-slate-300 mb-3 font-bold uppercase">Рекомендуем: <span class="text-white">V2Box</span></p>
                     <ol class="text-[11px] text-slate-400 space-y-3 font-medium">
-                        <li class="flex gap-2"><span>1.</span> <span>Установите <b>V2Box</b> из App Store.</span></li>
-                        <li class="flex gap-2"><span>2.</span> <span>Скопируйте ключ на главной вкладке этого бота.</span></li>
-                        <li class="flex gap-2"><span>3.</span> <span>В приложении нажмите <b>"+"</b> вверху → <b>"Import from Clipboard"</b>.</span></li>
-                        <li class="flex gap-2 text-indigo-400"><span>4.</span> <span>Нажмите "Connect" и разрешите добавление VPN-конфигурации.</span></li>
+                        <li>1. Скачайте <b>V2Box</b> в App Store.</li>
+                        <li>2. Скопируйте ключ во вкладке "Кабинет".</li>
+                        <li>3. В приложении: <b>Configs</b> → <b>+</b> → <b>Import from Clipboard</b>.</li>
+                        <li>4. Нажмите <b>Connect</b>.</li>
                     </ol>
                 </div>
-
                 <div class="guide-item">
                     <div class="flex items-center gap-3 mb-4">
-                        <div class="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center text-green-400 text-xs">TV</div>
-                        <p class="font-black text-sm uppercase">Android & Android TV</p>
+                        <div class="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center text-green-400 text-[10px]">APK</div>
+                        <p class="font-black text-sm uppercase italic">Android / TV</p>
                     </div>
+                    <p class="text-[11px] text-slate-300 mb-3 font-bold uppercase">Рекомендуем: <span class="text-white">Hiddify</span> или <span class="text-white">v2rayNG</span></p>
                     <ol class="text-[11px] text-slate-400 space-y-3 font-medium">
-                        <li class="flex gap-2"><span>1.</span> <span>Установите <b>v2rayNG</b> (есть в Play Store).</span></li>
-                        <li class="flex gap-2"><span>2.</span> <span>Нажмите <b>"+"</b> → <b>"Импорт из буфера обмена"</b>.</span></li>
-                        <li class="flex gap-2"><span>3.</span> <span>Выберите сервер в списке и нажмите круглую кнопку <b>"V"</b> снизу.</span></li>
-                        <li class="flex gap-2 text-green-500"><span>•</span> <span>Для TV: используйте флешку для установки .apk или TV-браузер.</span></li>
+                        <li>1. Установите <b>Hiddify</b> из Play Store.</li>
+                        <li>2. Нажмите <b>+ New Profile</b> → <b>Add from Clipboard</b>.</li>
+                        <li>3. Нажмите на кнопку подключения в центре.</li>
                     </ol>
                 </div>
-
-                <div class="guide-item">
+                <div class="guide-item border-red-500/30 bg-red-500/5">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center text-white">⌘</div>
-                        <p class="font-black text-sm uppercase">Windows / Mac</p>
+                        <p class="font-black text-sm uppercase italic">Windows PC</p>
                     </div>
-                    <p class="text-[11px] text-slate-400 leading-relaxed font-medium">Используйте <b>Nekoray</b> (Windows/Mac). Просто нажмите <b>Ctrl+V</b> внутри программы после копирования ключа. Затем правой кнопкой → "Start".</p>
+                    <p class="text-[11px] text-red-500 font-extrabold uppercase mb-3 animate-pulse italic underline">! ЗАПУСКАТЬ СТРОГО ОТ ИМЕНИ АДМИНИСТРАТОРА !</p>
+                    <p class="text-[11px] text-slate-400 leading-relaxed font-medium">Скачайте <b>Hiddify Next</b> или <b>Nekoray</b>. После копирования ключа нажмите <b>Ctrl+V</b>. Согласитесь на установку системных служб.</p>
                 </div>
             </div>
         </section>
@@ -172,32 +137,26 @@
             <div class="cyber-card p-10 text-center relative overflow-hidden border-indigo-500/20">
                 <div class="text-5xl mb-6">🛰️</div>
                 <h2 class="text-2xl font-black mb-3 italic">Referral Hub</h2>
-                <p class="text-[11px] text-slate-400 mb-8 uppercase font-bold tracking-tighter leading-relaxed">Приглашай друзей и получай <span class="text-indigo-400">+7 дней</span> за каждую покупку друга.</p>
+                <p class="text-[11px] text-slate-400 mb-8 uppercase font-bold tracking-tighter leading-relaxed">Получай <span class="text-indigo-400">+7 дней</span> к подписке за каждую покупку приглашенного друга.</p>
                 
                 <div class="bg-indigo-500/5 border border-indigo-500/10 p-6 rounded-3xl mb-8">
-                    <p class="text-[10px] text-slate-500 uppercase font-black mb-1">Total Invited</p>
+                    <p class="text-[10px] text-slate-500 uppercase font-black mb-1">Приглашено друзей</p>
                     <p id="ref_count" class="text-4xl font-black text-white italic">0</p>
                 </div>
                 
-                <button onclick="tg.sendData('get_ref_link')" class="w-full bg-indigo-600 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-lg shadow-indigo-500/20 active:scale-95 transition-all">Генерировать ссылку</button>
+                <div id="ref_container">
+                    <button id="ref_btn" onclick="generateRefLink()" class="w-full bg-indigo-600 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-lg shadow-indigo-500/20 active:scale-95 transition-all">Генерировать ссылку</button>
+                </div>
+                <p id="copy_hint" class="text-[9px] text-slate-500 mt-4 uppercase font-bold hidden">Нажмите на ссылку выше, чтобы скопировать</p>
             </div>
         </section>
-
     </main>
 
     <nav class="fixed bottom-6 left-6 right-6 bg-[#111114]/90 backdrop-blur-2xl border border-white/5 flex justify-around p-3 rounded-[32px] z-50 shadow-2xl">
-        <button onclick="switchTab('home')" id="btn-home" class="nav-btn nav-active">
-            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-        </button>
-        <button onclick="switchTab('shop')" id="btn-shop" class="nav-btn">
-            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-        </button>
-        <button onclick="switchTab('guides')" id="btn-guides" class="nav-btn">
-            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-        </button>
-        <button onclick="switchTab('refs')" id="btn-refs" class="nav-btn">
-            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-        </button>
+        <button onclick="switchTab('home')" id="btn-home" class="nav-btn"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></button>
+        <button onclick="switchTab('shop')" id="btn-shop" class="nav-btn"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></button>
+        <button onclick="switchTab('guides')" id="btn-guides" class="nav-btn"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></button>
+        <button onclick="switchTab('refs')" id="btn-refs" class="nav-btn"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></button>
     </nav>
 
 <script>
@@ -205,49 +164,56 @@
     tg.expand();
     tg.headerColor = '#050505';
 
-    // Функция инициализации при загрузке страницы
     window.onload = function() {
         const params = new URLSearchParams(window.location.search);
         
-        // --- ЛОГИКА АВТО-ПЕРЕКЛЮЧЕНИЯ ВКЛАДКИ ---
-        const targetTab = params.get('tab'); // Ищем параметр ?tab= в ссылке
-        if (targetTab && document.getElementById('tab-' + targetTab)) {
-            switchTab(targetTab);
-        } else {
-            switchTab('home'); // По умолчанию открываем кабинет
-        }
+        // Авто-таб
+        const targetTab = params.get('tab');
+        switchTab(targetTab && document.getElementById('tab-' + targetTab) ? targetTab : 'home');
 
-        // Заполнение данных
-        document.getElementById('vless_key').innerText = decodeURIComponent(params.get('key') || 'Node link not found');
+        // Данные
+        document.getElementById('vless_key').innerText = decodeURIComponent(params.get('key') || 'Ключ не найден');
         document.getElementById('traffic').innerText = (params.get('gb') || '0.00') + ' GB / ∞';
         document.getElementById('ref_count').innerText = params.get('refs') || '0';
 
         const expiry = params.get('expiry_ts');
         if (expiry && expiry != '0') {
             const d = new Date(parseInt(expiry));
-            document.getElementById('expiry_date').innerText = d.toLocaleDateString('ru-RU', {day:'numeric', month:'long', year:'numeric'});
+            document.getElementById('expiry_date').innerText = d.toLocaleDateString('ru-RU', {day:'numeric', month:'long'});
         } else {
             document.getElementById('expiry_date').innerText = "Trial Expired";
             document.getElementById('expiry_date').style.color = '#ef4444';
         }
     };
 
-    // Обновленная функция переключения вкладок
     function switchTab(id) {
         tg.HapticFeedback.impactOccurred('medium');
-        
-        // Скрываем все вкладки и убираем активные стили с кнопок
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active'));
+        document.getElementById('tab-' + id).classList.add('active');
+        document.getElementById('btn-' + id).classList.add('nav-active');
+    }
+
+    // ЛОГИКА РЕФЕРАЛКИ: Генерация прямо в окне
+    function generateRefLink() {
+        tg.HapticFeedback.impactOccurred('heavy');
+        const userId = new URLSearchParams(window.location.search).get('user_id') || '0000';
+        const link = `https://t.me/Silence_VPN_bot?start=${userId}`;
         
-        // Показываем нужную
-        const targetContent = document.getElementById('tab-' + id);
-        const targetBtn = document.getElementById('btn-' + id);
+        const btn = document.getElementById('ref_btn');
+        btn.innerText = link; // Заменяем текст кнопки на ссылку
+        btn.classList.replace('bg-indigo-600', 'bg-white/10');
+        btn.classList.add('text-[10px]', 'text-indigo-400', 'lowercase');
         
-        if (targetContent && targetBtn) {
-            targetContent.classList.add('active');
-            targetBtn.classList.add('nav-active');
-        }
+        document.getElementById('copy_hint').classList.remove('hidden');
+        
+        // По клику на новую кнопку — копируем
+        btn.onclick = function() {
+            navigator.clipboard.writeText(link).then(() => {
+                tg.showAlert('Ссылка скопирована!');
+                tg.HapticFeedback.notificationOccurred('success');
+            });
+        };
     }
 
     function copyKey() {
@@ -264,10 +230,10 @@
         setTimeout(() => { tg.close(); }, 200);
     }
 
-    // Имитация пинга
     setInterval(() => {
         const p = Math.floor(Math.random() * 15) + 20;
         document.getElementById('ping_val').innerText = p + 'ms';
     }, 3000);
 </script>
+</body>
 </html>
