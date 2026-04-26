@@ -18,15 +18,9 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         
-        /* КРАСИВАЯ ЗАМЕНА ЩИТА: Технологичная сетка на фоне */
-        .shield-replacement {
-            border: 1px solid rgba(99, 102, 241, 0.15);
-            background: 
-                radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.08), transparent 50%),
-                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                #0d0d0f;
-            background-size: 100% 100%, 20px 20px, 20px 20px;
+        .shield-main {
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.05), transparent), #0d0d0f;
         }
 
         .tab-content { display: none; animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -55,14 +49,13 @@
     <header class="p-6 flex justify-between items-center sticky top-0 bg-[#050505]/80 backdrop-blur-xl z-50">
         <div class="flex items-center gap-3">
             <div class="relative">
-                <svg class="w-7 h-7 text-indigo-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 2l9 4.5V17.5L12 22l-9-4.5V6.5L12 2z"/>
-                    <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                <svg class="relative w-7 h-7 text-indigo-500" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z"/>
                 </svg>
             </div>
             <div>
-                <h1 class="text-xl font-extrabold italic tracking-tighter uppercase leading-none">SILENCE <span class="text-indigo-500 font-black">PRO</span></h1>
-                <p class="text-[9px] text-slate-500 font-bold uppercase tracking-[0.2em] mt-1">Next-Gen Encryption</p>
+                <h1 class="text-xl font-extrabold italic tracking-tighter uppercase">SILENCE <span class="text-indigo-500 font-black">PRO</span></h1>
+                <p class="text-[9px] text-slate-500 font-bold uppercase tracking-[0.2em]">Next-Gen Encryption</p>
             </div>
         </div>
         <div class="flex flex-col items-end">
@@ -75,49 +68,47 @@
 
     <main class="px-6">
         <section id="tab-home" class="tab-content">
-            <div class="cyber-card shield-replacement p-6 mb-4 relative overflow-hidden">
-                <div class="relative z-10">
-                    <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Активен до</p>
-                    <h2 id="expiry_date" class="text-3xl font-black mb-6 italic text-white tracking-tight uppercase tracking-tighter">Загрузка...</h2>
-                    
-                    <div class="grid grid-cols-2 gap-4 mb-6">
-                        <div class="bg-white/5 backdrop-blur-md p-3 rounded-xl border border-white/5">
-                            <p class="text-[9px] text-slate-500 uppercase font-bold mb-1">Локация</p>
-                            <p class="text-xs font-black italic">🇪🇺 Europe</p>
-                        </div>
-                        <div class="bg-white/5 backdrop-blur-md p-3 rounded-xl border border-white/5">
-                            <p class="text-[9px] text-slate-500 uppercase font-bold mb-1">Протокол</p>
-                            <p class="text-xs font-black text-indigo-400 italic">VLESS + Reality</p>
-                        </div>
+            <div class="cyber-card shield-main p-6 mb-4 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10">
+                    <svg width="80" height="80" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z"/>
+                    </svg>
+                </div>
+                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Активен до</p>
+                <h2 id="expiry_date" class="text-3xl font-black mb-6 italic text-white tracking-tight">Загрузка...</h2>
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="bg-white/5 p-3 rounded-xl border border-white/5">
+                        <p class="text-[9px] text-slate-500 uppercase font-bold mb-1">Локация</p>
+                        <p class="text-xs font-bold">🇪🇺 Europe</p>
                     </div>
-                    
-                    <div class="flex justify-between text-[11px] mb-2 font-bold uppercase tracking-tight">
-                        <span class="text-slate-400">Использовано</span>
-                        <span id="traffic" class="text-indigo-400 font-black italic">0.00 GB / ∞</span>
+                    <div class="bg-white/5 p-3 rounded-xl border border-white/5">
+                        <p class="text-[9px] text-slate-500 uppercase font-bold mb-1">Протокол</p>
+                        <p class="text-xs font-bold text-indigo-400">VLESS + Reality</p>
                     </div>
-                    <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-                        <div id="traffic_bar" class="h-full bg-gradient-to-r from-indigo-600 to-purple-500 w-[15%] shadow-[0_0_15px_rgba(99,102,241,0.6)]"></div>
-                    </div>
+                </div>
+                <div class="flex justify-between text-[11px] mb-2 font-bold uppercase tracking-tight">
+                    <span class="text-slate-400">Использовано</span>
+                    <span id="traffic" class="text-indigo-400">0.00 GB / ∞</span>
+                </div>
+                <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div id="traffic_bar" class="h-full bg-gradient-to-r from-indigo-600 to-purple-500 w-[15%] shadow-[0_0_15px_rgba(99,102,241,0.6)]"></div>
                 </div>
             </div>
 
             <div class="cyber-card p-5 mb-4">
-                <p class="text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest text-center">Personal Access Key</p>
-                <div id="vless_key" class="bg-black/60 p-4 rounded-xl text-[10px] font-mono text-indigo-300/50 break-all border border-indigo-500/10 mb-4 select-all leading-relaxed text-center">Загрузка ключа...</div>
-                <button onclick="copyKey()" class="w-full bg-white text-black font-black py-4 rounded-2xl active:scale-95 transition-all shadow-[0_10px_20px_rgba(255,255,255,0.1)] uppercase text-[11px] tracking-[0.2em] italic">Скопировать ключ</button>
+                <p class="text-[10px] font-black uppercase text-slate-500 mb-3">Personal Access Key</p>
+                <div id="vless_key" class="bg-black/60 p-4 rounded-xl text-[10px] font-mono text-indigo-300/70 break-all border border-indigo-500/10 mb-4 select-all leading-relaxed">Загрузка ключа...</div>
+                <button onclick="copyKey()" class="w-full bg-white text-black font-black py-4 rounded-2xl active:scale-95 transition-all shadow-[0_10px_20px_rgba(255,255,255,0.1)] uppercase text-xs tracking-widest">Скопировать ключ</button>
             </div>
 
-            <div onclick="tg.openTelegramLink('https://t.me/Squishyyyy555')" class="cyber-card support-card p-5 flex items-center justify-between active:scale-[0.98] transition-all cursor-pointer">
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 bg-indigo-500/10 rounded-full flex items-center justify-center border border-indigo-500/20 text-indigo-400">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                    </div>
-                    <div>
-                        <p class="text-[10px] text-slate-500 uppercase font-black">Нужна помощь?</p>
-                        <p class="text-xs font-bold text-white uppercase italic">Написать Сквизи</p>
-                    </div>
+            <div onclick="tg.openTelegramLink('https://t.me/Squishyyyy555')" class="cyber-card support-card p-5 flex items-center gap-4 active:scale-[0.98] transition-all cursor-pointer">
+                <div class="w-10 h-10 bg-indigo-500/20 rounded-full flex items-center justify-center border border-indigo-500/20 text-indigo-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                 </div>
-                <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <div>
+                    <p class="text-[10px] text-slate-500 uppercase font-black">Нужна помощь?</p>
+                    <p class="text-xs font-bold text-white">Написать Админу</p>
+                </div>
             </div>
         </section>
 
@@ -147,17 +138,55 @@
         <section id="tab-guides" class="tab-content">
             <h2 class="text-xl font-black mb-6 px-1 italic text-indigo-400 uppercase">Настройка Soft</h2>
             <div class="space-y-4">
-                <div class="guide-item text-xs font-bold uppercase italic text-slate-500">Следуйте инструкциям в приложении...</div>
+                <div class="guide-item">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-indigo-500/20 rounded-lg flex items-center justify-center text-indigo-400 font-bold"></div>
+                        <p class="font-black text-sm uppercase italic">Apple iOS / Mac</p>
+                    </div>
+                    <p class="text-[11px] text-slate-300 mb-3 font-bold uppercase tracking-tight">Рекомендуем: <span class="text-white">V2Box</span></p>
+                    <ol class="text-[11px] text-slate-400 space-y-3 font-medium">
+                        <li>1. Установите <b class="text-white">V2Box/Hiddify/HAPP</b> из App Store.</li>
+                        <li>2. Скопируйте ключ во вкладке "Кабинет".</li>
+                        <li>3. В приложении: <b>Configs</b> → <b>+</b> → <b>Import from Clipboard</b>.</li>
+                        <li>4. Нажмите <b>Connect</b>.</li>
+                    </ol>
+                </div>
+                <div class="guide-item">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center text-green-400 text-[10px] font-black tracking-tighter">APK</div>
+                        <p class="font-black text-sm uppercase italic">Android / TV</p>
+                    </div>
+                    <p class="text-[11px] text-slate-300 mb-3 font-bold uppercase tracking-tight">Рекомендуем: <span class="text-white">Hiddify</span></p>
+                    <ol class="text-[11px] text-slate-400 space-y-3 font-medium">
+                        <li>1. Установите <b class="text-white">V2Box/Hiddify/HAPP</b> из Play Store.</li>
+                        <li>2. Нажмите <b>+ New Profile</b> → <b>Add from Clipboard</b>.</li>
+                        <li>3. Нажмите на большую кнопку подключения.</li>
+                    </ol>
+                </div>
+                <div class="guide-item border-red-500/30 bg-red-500/5">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center text-white">⌘</div>
+                        <p class="font-black text-sm uppercase italic">Windows PC</p>
+                    </div>
+                    <p class="text-[11px] text-red-500 font-black uppercase mb-3 animate-pulse italic">! Запуск от имени администратора !</p>
+                    <p class="text-[11px] text-slate-400 leading-relaxed font-medium">Используйте <b class="text-white">Hiddify/Amnezia VPN</b>. После копирования ключа нажмите <b>Ctrl+V</b> в программе. Согласитесь на установку VPN-служб.</p>
+                </div>
             </div>
         </section>
 
         <section id="tab-refs" class="tab-content">
             <div class="cyber-card p-10 text-center relative overflow-hidden border-indigo-500/20">
-                <div class="text-5xl mb-6">🛰️</div>
+                <div class="text-5xl mb-6 shadow-2xl">🛰️</div>
                 <h2 class="text-2xl font-black mb-3 italic uppercase tracking-tighter">Referral Hub</h2>
-                <div id="ref_container">
-                    <button id="ref_btn" onclick="generateRefLink()" class="w-full bg-indigo-600 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] text-white">Генерировать ссылку</button>
+                <p class="text-[11px] text-slate-400 mb-8 uppercase font-bold tracking-tighter leading-relaxed">Получай <span class="text-indigo-400">+7 дней</span> к подписке за каждую покупку друга.</p>
+                <div class="bg-indigo-500/5 border border-indigo-500/10 p-6 rounded-3xl mb-8">
+                    <p class="text-[10px] text-slate-500 uppercase font-black mb-1">Приглашено друзей</p>
+                    <p id="ref_count" class="text-4xl font-black text-white italic">0</p>
                 </div>
+                <div id="ref_container">
+                    <button id="ref_btn" onclick="generateRefLink()" class="w-full bg-indigo-600 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-lg shadow-indigo-500/20 active:scale-95 transition-all text-white">Генерировать ссылку</button>
+                </div>
+                <p id="copy_hint" class="text-[9px] text-slate-500 mt-4 uppercase font-bold hidden italic">Нажмите на ссылку выше, чтобы скопировать её</p>
             </div>
         </section>
     </main>
@@ -176,9 +205,23 @@
 
     window.onload = function() {
         const params = new URLSearchParams(window.location.search);
-        switchTab(params.get('tab') || 'home');
-        document.getElementById('expiry_date').innerText = "15 МАЯ"; // Пример
-        document.getElementById('vless_key').innerText = "vless://4f06f6e2-4a85-42c4-873a-40c5723d87ad@213.134.31.151:443...";
+        const targetTab = params.get('tab');
+        switchTab(targetTab && document.getElementById('tab-' + targetTab) ? targetTab : 'home');
+
+        const key = params.get('key');
+        document.getElementById('vless_key').innerText = key ? decodeURIComponent(key) : 'Ключ станет доступен после покупки';
+        document.getElementById('traffic').innerText = (params.get('gb') || '0.00') + ' GB / ∞';
+        document.getElementById('ref_count').innerText = params.get('refs') || '0';
+
+        const expiry = params.get('expiry_ts');
+        const expiryEl = document.getElementById('expiry_date');
+        if (expiry && expiry != '0') {
+            const d = new Date(parseInt(expiry));
+            expiryEl.innerText = d.toLocaleDateString('ru-RU', {day:'numeric', month:'long'});
+        } else {
+            expiryEl.innerText = "Подписка истекла";
+            expiryEl.style.color = '#ef4444';
+        }
     };
 
     function switchTab(id) {
@@ -189,13 +232,41 @@
         document.getElementById('btn-' + id).classList.add('nav-active');
     }
 
+    function generateRefLink() {
+        tg.HapticFeedback.impactOccurred('heavy');
+        const params = new URLSearchParams(window.location.search);
+        const userId = params.get('user_id') || '0000';
+        const link = `https://t.me/kolipsfv_bot?start=ref${userId}`;
+        const btn = document.getElementById('ref_btn');
+        btn.innerText = link;
+        btn.classList.replace('bg-indigo-600', 'bg-white/10');
+        btn.classList.add('text-[10px]', 'text-indigo-400', 'lowercase', 'border', 'border-indigo-500/20');
+        document.getElementById('copy_hint').classList.remove('hidden');
+        btn.onclick = function() {
+            navigator.clipboard.writeText(link).then(() => {
+                tg.HapticFeedback.notificationOccurred('success');
+                tg.showAlert('Ссылка скопирована!');
+            });
+        };
+    }
+
     function copyKey() {
-        tg.HapticFeedback.notificationOccurred('success');
-        tg.showAlert('Ключ скопирован!');
+        const key = document.getElementById('vless_key').innerText;
+        if (key.includes('доступен после')) return;
+        navigator.clipboard.writeText(key).then(() => {
+            tg.HapticFeedback.notificationOccurred('success');
+            tg.showAlert('Ключ скопирован! Добавьте его в приложение по инструкции.');
+        });
+    }
+
+    function sendAction(plan) {
+        tg.HapticFeedback.impactOccurred('heavy');
+        tg.sendData(`buy_${plan}_stars`);
+        setTimeout(() => { tg.close(); }, 200);
     }
 
     setInterval(() => {
-        const p = Math.floor(Math.random() * 5) + 22;
+        const p = Math.floor(Math.random() * 10) + 20;
         document.getElementById('ping_val').innerText = p + 'ms';
     }, 4000);
 </script>
