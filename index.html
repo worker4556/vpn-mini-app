@@ -197,20 +197,30 @@
     // ЛОГИКА РЕФЕРАЛКИ: Генерация прямо в окне
     function generateRefLink() {
         tg.HapticFeedback.impactOccurred('heavy');
-        const userId = new URLSearchParams(window.location.search).get('user_id') || '0000';
-        const link = `https://t.me/Silence_VPN_bot?start=${userId}`;
+        
+        // Берем ID пользователя из URL. Бот должен передавать его как ?user_id=12345
+        const params = new URLSearchParams(window.location.search);
+        const userId = params.get('user_id');
+        
+        if (!userId) {
+            tg.showAlert('Ошибка: ID пользователя не найден. Попробуйте перезапустить бота.');
+            return;
+        }
+
+        // Формируем твою правильную ссылку
+        const link = `https://t.me/kolipsfv_bot?start=ref${userId}`;
         
         const btn = document.getElementById('ref_btn');
-        btn.innerText = link; // Заменяем текст кнопки на ссылку
+        btn.innerText = link; // Выводим ссылку прямо на кнопку
         btn.classList.replace('bg-indigo-600', 'bg-white/10');
-        btn.classList.add('text-[10px]', 'text-indigo-400', 'lowercase');
+        btn.classList.add('text-[10px]', 'text-indigo-400', 'lowercase', 'border', 'border-indigo-500/30');
         
         document.getElementById('copy_hint').classList.remove('hidden');
         
-        // По клику на новую кнопку — копируем
+        // Меняем действие кнопки на копирование
         btn.onclick = function() {
             navigator.clipboard.writeText(link).then(() => {
-                tg.showAlert('Ссылка скопирована!');
+                tg.showAlert('Ссылка для приглашения скопирована!');
                 tg.HapticFeedback.notificationOccurred('success');
             });
         };
