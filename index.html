@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #050505; --card: #0d0d0f; --accent: #6366f1; --success: #22c55e; }
+        :root { --bg: #050505; --card: #0d0d0f; --accent: #6366f1; --success: #22c55e; --crypto: #f59e0b; }
         body { background: var(--bg); color: white; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
         
         .cyber-card { 
@@ -37,11 +37,6 @@
         .guide-item { background: rgba(255,255,255,0.02); border-radius: 18px; padding: 18px; border: 1px solid rgba(255,255,255,0.05); }
         .status-dot { width: 8px; height: 8px; border-radius: 50%; animation: blink 2s infinite; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-        
-        .support-card {
-            background: linear-gradient(90deg, #111114 0%, #09090b 100%);
-            border: 1px solid rgba(99, 102, 241, 0.1);
-        }
     </style>
 </head>
 <body class="pb-32">
@@ -69,11 +64,6 @@
     <main class="px-6">
         <section id="tab-home" class="tab-content">
             <div class="cyber-card shield-main p-6 mb-4 relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4 opacity-10">
-                    <svg width="80" height="80" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z"/>
-                    </svg>
-                </div>
                 <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Активен до</p>
                 <h2 id="expiry_date" class="text-3xl font-black mb-6 italic text-white tracking-tight">Загрузка...</h2>
                 <div class="grid grid-cols-2 gap-4 mb-6">
@@ -100,37 +90,34 @@
                 <div id="vless_key" class="bg-black/60 p-4 rounded-xl text-[10px] font-mono text-indigo-300/70 break-all border border-indigo-500/10 mb-4 select-all leading-relaxed">Загрузка ключа...</div>
                 <button onclick="copyKey()" class="w-full bg-white text-black font-black py-4 rounded-2xl active:scale-95 transition-all shadow-[0_10px_20px_rgba(255,255,255,0.1)] uppercase text-xs tracking-widest">Скопировать ключ</button>
             </div>
-
-            <div onclick="tg.openTelegramLink('https://t.me/Squishyyyy555')" class="cyber-card support-card p-5 flex items-center gap-4 active:scale-[0.98] transition-all cursor-pointer">
-                <div class="w-10 h-10 bg-indigo-500/20 rounded-full flex items-center justify-center border border-indigo-500/20 text-indigo-400">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                </div>
-                <div>
-                    <p class="text-[10px] text-slate-500 uppercase font-black">Нужна помощь?</p>
-                    <p class="text-xs font-bold text-white">Написать Админу</p>
-                </div>
-            </div>
         </section>
 
         <section id="tab-shop" class="tab-content">
             <h2 class="text-xl font-black mb-6 px-1 italic uppercase">Тарифные планы</h2>
             <div class="grid gap-4 mb-8">
-                <div onclick="sendAction('1m')" class="cyber-card p-6 flex justify-between items-center border border-white/5 active:border-indigo-500 transition-all">
-                    <div>
+                <div class="cyber-card p-5 border border-white/5">
+                    <div class="mb-4">
                         <p class="font-black text-lg italic text-white uppercase">Premium 30</p>
-                        <p class="text-[11px] text-slate-500 mt-1 uppercase font-bold tracking-tighter">Все локации • Безлимит</p>
+                        <p class="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">Все локации • Безлимит трафик</p>
                     </div>
-                    <div class="bg-indigo-500/10 px-4 py-2 rounded-xl text-indigo-400 font-black border border-indigo-500/20">1 ★</div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="sendAction('1m', 'stars')" class="bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 py-3 rounded-xl font-black text-[10px] uppercase active:scale-95 transition-all">Stars (1 ★)</button>
+                        <button onclick="sendAction('1m', 'crypto')" class="bg-orange-500/10 text-orange-400 border border-orange-500/20 py-3 rounded-xl font-black text-[10px] uppercase active:scale-95 transition-all">Crypto (USDT)</button>
+                    </div>
                 </div>
-                <div onclick="sendAction('3m')" class="cyber-card p-6 flex justify-between items-center border border-indigo-500/40 bg-indigo-500/5 transition-all">
-                    <div>
+
+                <div class="cyber-card p-5 border border-indigo-500/40 bg-indigo-500/5">
+                    <div class="mb-4">
                         <div class="flex items-center gap-2 mb-1">
                             <p class="font-black text-lg italic text-white uppercase">Premium 90</p>
                             <span class="text-[9px] bg-indigo-500 text-white px-2 py-0.5 rounded font-black uppercase">Выгодно</span>
                         </div>
-                        <p class="text-[11px] text-slate-400 uppercase font-bold tracking-tighter italic">Экономия 20% • VIP поддержка</p>
+                        <p class="text-[10px] text-slate-400 uppercase font-bold italic">Экономия 20% • VIP поддержка</p>
                     </div>
-                    <div class="bg-indigo-500 px-4 py-2 rounded-xl text-white font-black shadow-[0_0_15px_rgba(99,102,241,0.4)]">3 ★</div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="sendAction('3m', 'stars')" class="bg-indigo-600 text-white py-3 rounded-xl font-black text-[10px] uppercase shadow-lg shadow-indigo-500/20 active:scale-95 transition-all">Stars (3 ★)</button>
+                        <button onclick="sendAction('3m', 'crypto')" class="bg-orange-500 text-white py-3 rounded-xl font-black text-[10px] uppercase shadow-lg shadow-orange-500/20 active:scale-95 transition-all">Crypto (USDT)</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -139,63 +126,40 @@
             <h2 class="text-xl font-black mb-6 px-1 italic text-indigo-400 uppercase">Настройка Soft</h2>
             <div class="space-y-4">
                 <div class="guide-item">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-8 h-8 bg-indigo-500/20 rounded-lg flex items-center justify-center text-indigo-400 font-bold"></div>
-                        <p class="font-black text-sm uppercase italic">Apple iOS / Mac</p>
-                    </div>
-                    <p class="text-[11px] text-slate-300 mb-3 font-bold uppercase tracking-tight">Рекомендуем: <span class="text-white">V2Box</span></p>
-                    <ol class="text-[11px] text-slate-400 space-y-3 font-medium">
-                        <li>1. Установите <b class="text-white">V2Box/Hiddify/HAPP</b> из App Store.</li>
-                        <li>2. Скопируйте ключ во вкладке "Кабинет".</li>
-                        <li>3. В приложении: <b>Configs</b> → <b>+</b> → <b>Import from Clipboard</b>.</li>
-                        <li>4. Нажмите <b>Connect</b>.</li>
-                    </ol>
+                    <p class="font-black text-sm uppercase italic mb-2">Apple iOS / Mac</p>
+                    <p class="text-[11px] text-slate-400">Используйте <b>V2Box</b> или <b>Hiddify</b>. Скопируйте ключ и выберите "Import from Clipboard".</p>
                 </div>
                 <div class="guide-item">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center text-green-400 text-[10px] font-black tracking-tighter">APK</div>
-                        <p class="font-black text-sm uppercase italic">Android / TV</p>
-                    </div>
-                    <p class="text-[11px] text-slate-300 mb-3 font-bold uppercase tracking-tight">Рекомендуем: <span class="text-white">Hiddify</span></p>
-                    <ol class="text-[11px] text-slate-400 space-y-3 font-medium">
-                        <li>1. Установите <b class="text-white">V2Box/Hiddify/HAPP</b> из Play Store.</li>
-                        <li>2. Нажмите <b>+ New Profile</b> → <b>Add from Clipboard</b>.</li>
-                        <li>3. Нажмите на большую кнопку подключения.</li>
-                    </ol>
+                    <p class="font-black text-sm uppercase italic mb-2">Android</p>
+                    <p class="text-[11px] text-slate-400">Рекомендуем <b>Hiddify</b>. Нажмите "+" и добавьте ключ из буфера.</p>
                 </div>
-                <div class="guide-item border-red-500/30 bg-red-500/5">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center text-white">⌘</div>
-                        <p class="font-black text-sm uppercase italic">Windows PC</p>
-                    </div>
-                    <p class="text-[11px] text-red-500 font-black uppercase mb-3 animate-pulse italic">! Запуск от имени администратора !</p>
-                    <p class="text-[11px] text-slate-400 leading-relaxed font-medium">Используйте <b class="text-white">Hiddify/Amnezia VPN</b>. После копирования ключа нажмите <b>Ctrl+V</b> в программе. Согласитесь на установку VPN-служб.</p>
+                <div class="guide-item border-red-500/20 bg-red-500/5">
+                    <p class="font-black text-sm uppercase italic mb-2 text-red-500">Windows PC</p>
+                    <p class="text-[11px] text-slate-400">Запуск <b>Hiddify</b> от имени администратора обязателен.</p>
                 </div>
             </div>
         </section>
 
         <section id="tab-refs" class="tab-content">
-            <div class="cyber-card p-10 text-center relative overflow-hidden border-indigo-500/20">
-                <div class="text-5xl mb-6 shadow-2xl">🛰️</div>
-                <h2 class="text-2xl font-black mb-3 italic uppercase tracking-tighter">Referral Hub</h2>
-                <p class="text-[11px] text-slate-400 mb-8 uppercase font-bold tracking-tighter leading-relaxed">Получай <span class="text-indigo-400">+7 дней</span> к подписке за каждую покупку друга.</p>
-                <div class="bg-indigo-500/5 border border-indigo-500/10 p-6 rounded-3xl mb-8">
-                    <p class="text-[10px] text-slate-500 uppercase font-black mb-1">Приглашено друзей</p>
-                    <p id="ref_count" class="text-4xl font-black text-white italic">0</p>
+            <div class="cyber-card p-8 text-center border-indigo-500/20">
+                <div class="text-4xl mb-4">🛰️</div>
+                <h2 class="text-xl font-black mb-2 italic uppercase">Referral Hub</h2>
+                <p class="text-[10px] text-slate-400 mb-6 uppercase font-bold">Получай +7 дней за каждую покупку друга</p>
+                <div class="bg-white/5 p-4 rounded-2xl mb-6">
+                    <p class="text-[9px] text-slate-500 uppercase font-black mb-1">Приглашено друзей</p>
+                    <p id="ref_count" class="text-3xl font-black text-white italic">0</p>
                 </div>
-                <div id="ref_container">
-                    <button id="ref_btn" onclick="generateRefLink()" class="w-full bg-indigo-600 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-lg shadow-indigo-500/20 active:scale-95 transition-all text-white">Генерировать ссылку</button>
-                </div>
-                <p id="copy_hint" class="text-[9px] text-slate-500 mt-4 uppercase font-bold hidden italic">Нажмите на ссылку выше, чтобы скопировать её</p>
+                <button id="ref_btn" onclick="generateRefLink()" class="w-full bg-indigo-600 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest text-white shadow-lg shadow-indigo-500/20">Создать ссылку</button>
+                <p id="copy_hint" class="text-[9px] text-slate-500 mt-4 uppercase font-bold hidden italic text-center">Нажмите на ссылку, чтобы скопировать</p>
             </div>
         </section>
     </main>
 
     <nav class="fixed bottom-6 left-6 right-6 bg-[#111114]/90 backdrop-blur-3xl border border-white/5 flex justify-around p-3 rounded-[32px] z-50 shadow-2xl">
-        <button onclick="switchTab('home')" id="btn-home" class="nav-btn"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></button>
-        <button onclick="switchTab('shop')" id="btn-shop" class="nav-btn"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></button>
-        <button onclick="switchTab('guides')" id="btn-guides" class="nav-btn"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></button>
-        <button onclick="switchTab('refs')" id="btn-refs" class="nav-btn"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></button>
+        <button onclick="switchTab('home')" id="btn-home" class="nav-btn"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></button>
+        <button onclick="switchTab('shop')" id="btn-shop" class="nav-btn"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></button>
+        <button onclick="switchTab('guides')" id="btn-guides" class="nav-btn"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></button>
+        <button onclick="switchTab('refs')" id="btn-refs" class="nav-btn"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></button>
     </nav>
 
 <script>
@@ -205,11 +169,9 @@
 
     window.onload = function() {
         const params = new URLSearchParams(window.location.search);
-        const targetTab = params.get('tab');
-        switchTab(targetTab && document.getElementById('tab-' + targetTab) ? targetTab : 'home');
+        switchTab(params.get('tab') || 'home');
 
-        const key = params.get('key');
-        document.getElementById('vless_key').innerText = key ? decodeURIComponent(key) : 'Ключ станет доступен после покупки';
+        document.getElementById('vless_key').innerText = params.get('key') ? decodeURIComponent(params.get('key')) : 'Ключ станет доступен после покупки';
         document.getElementById('traffic').innerText = (params.get('gb') || '0.00') + ' GB / ∞';
         document.getElementById('ref_count').innerText = params.get('refs') || '0';
 
@@ -232,17 +194,32 @@
         document.getElementById('btn-' + id).classList.add('nav-active');
     }
 
-    function generateRefLink() {
+    function sendAction(plan, method) {
         tg.HapticFeedback.impactOccurred('heavy');
+        // Отправка данных боту: buy_1m_stars или buy_1m_crypto
+        tg.sendData(`buy_${plan}_${method}`);
+        setTimeout(() => { tg.close(); }, 200);
+    }
+
+    function copyKey() {
+        const key = document.getElementById('vless_key').innerText;
+        if (key.includes('доступен')) return;
+        navigator.clipboard.writeText(key).then(() => {
+            tg.HapticFeedback.notificationOccurred('success');
+            tg.showAlert('Ключ в буфере обмена!');
+        });
+    }
+
+    function generateRefLink() {
         const params = new URLSearchParams(window.location.search);
-        const userId = params.get('user_id') || '0000';
+        const userId = params.get('user_id') || '0';
         const link = `https://t.me/kolipsfv_bot?start=ref${userId}`;
         const btn = document.getElementById('ref_btn');
         btn.innerText = link;
-        btn.classList.replace('bg-indigo-600', 'bg-white/10');
-        btn.classList.add('text-[10px]', 'text-indigo-400', 'lowercase', 'border', 'border-indigo-500/20');
+        btn.classList.replace('bg-indigo-600', 'bg-white/5');
+        btn.classList.add('text-[9px]', 'text-indigo-400', 'lowercase');
         document.getElementById('copy_hint').classList.remove('hidden');
-        btn.onclick = function() {
+        btn.onclick = () => {
             navigator.clipboard.writeText(link).then(() => {
                 tg.HapticFeedback.notificationOccurred('success');
                 tg.showAlert('Ссылка скопирована!');
@@ -250,24 +227,8 @@
         };
     }
 
-    function copyKey() {
-        const key = document.getElementById('vless_key').innerText;
-        if (key.includes('доступен после')) return;
-        navigator.clipboard.writeText(key).then(() => {
-            tg.HapticFeedback.notificationOccurred('success');
-            tg.showAlert('Ключ скопирован! Добавьте его в приложение по инструкции.');
-        });
-    }
-
-    function sendAction(plan) {
-        tg.HapticFeedback.impactOccurred('heavy');
-        tg.sendData(`buy_${plan}_stars`);
-        setTimeout(() => { tg.close(); }, 200);
-    }
-
     setInterval(() => {
-        const p = Math.floor(Math.random() * 10) + 20;
-        document.getElementById('ping_val').innerText = p + 'ms';
+        document.getElementById('ping_val').innerText = (Math.floor(Math.random() * 10) + 20) + 'ms';
     }, 4000);
 </script>
 </body>
