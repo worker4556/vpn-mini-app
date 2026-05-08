@@ -214,26 +214,42 @@
     tg.headerColor = '#050505';
 
     window.onload = function() {
-        const params = new URLSearchParams(window.location.search);
-        const targetTab = params.get('tab');
-        switchTab(targetTab && document.getElementById('tab-' + targetTab) ? targetTab : 'home');
+    const params = new URLSearchParams(window.location.search);
 
-        // Пример логики для JS
-        const usedGb = parseFloat(params.get('gb') || 0);
-        const limitGb = 100; // Твой лимит
-        const percent = Math.min((usedGb / limitGb) * 100, 100);
-        document.getElementById('traffic_bar').style.width = percent + '%';
+    const targetTab = params.get('tab');
+    switchTab(targetTab && document.getElementById('tab-' + targetTab) ? targetTab : 'home');
 
-        const expiry = params.get('expiry_ts');
-        const expiryEl = document.getElementById('expiry_date');
-        if (expiry && expiry != '0') {
-            const d = new Date(parseInt(expiry));
-            expiryEl.innerText = d.toLocaleDateString('ru-RU', {day:'numeric', month:'long'});
-        } else {
-            expiryEl.innerText = "Подписка истекла";
-            expiryEl.style.color = '#ef4444';
-        }
-    };
+    // Трафик
+    const usedGb = parseFloat(params.get('gb') || 0);
+    const limitGb = 100;
+    const percent = Math.min((usedGb / limitGb) * 100, 100);
+
+    document.getElementById('traffic_bar').style.width = percent + '%';
+
+    // Дата
+    const expiry = params.get('expiry_ts');
+    const expiryEl = document.getElementById('expiry_date');
+
+    if (expiry && expiry != '0') {
+        const d = new Date(parseInt(expiry));
+        expiryEl.innerText = d.toLocaleDateString('ru-RU', {
+            day:'numeric',
+            month:'long'
+        });
+    } else {
+        expiryEl.innerText = "Подписка истекла";
+        expiryEl.style.color = '#ef4444';
+    }
+
+    // Ключ
+    const vless = params.get('vless');
+
+    if (vless) {
+        document.getElementById('vless_key').innerText = decodeURIComponent(vless);
+    } else {
+        document.getElementById('vless_key').innerText = 'Ключ недоступен';
+    }
+};
 
     function switchTab(id) {
         tg.HapticFeedback.impactOccurred('medium');
