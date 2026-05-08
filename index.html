@@ -215,10 +215,11 @@
         const targetTab = params.get('tab');
         switchTab(targetTab && document.getElementById('tab-' + targetTab) ? targetTab : 'home');
 
-        const key = params.get('key');
-        document.getElementById('vless_key').innerText = key ? decodeURIComponent(key) : 'Ключ станет доступен после покупки';
-        document.getElementById('traffic').innerText = (params.get('gb') || '0.00') + ' GB / ∞';
-        document.getElementById('ref_count').innerText = params.get('refs') || '0';
+        // Пример логики для JS
+        const usedGb = parseFloat(params.get('gb') || 0);
+        const limitGb = 100; // Твой лимит
+        const percent = Math.min((usedGb / limitGb) * 100, 100);
+d        ocument.getElementById('traffic_bar').style.width = percent + '%';
 
         const expiry = params.get('expiry_ts');
         const expiryEl = document.getElementById('expiry_date');
