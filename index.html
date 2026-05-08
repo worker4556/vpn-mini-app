@@ -219,7 +219,7 @@
         const usedGb = parseFloat(params.get('gb') || 0);
         const limitGb = 100; // Твой лимит
         const percent = Math.min((usedGb / limitGb) * 100, 100);
-d        ocument.getElementById('traffic_bar').style.width = percent + '%';
+        document.getElementById('traffic_bar').style.width = percent + '%';
 
         const expiry = params.get('expiry_ts');
         const expiryEl = document.getElementById('expiry_date');
