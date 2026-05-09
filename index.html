@@ -219,14 +219,17 @@
     const targetTab = params.get('tab');
     switchTab(targetTab && document.getElementById('tab-' + targetTab) ? targetTab : 'home');
 
-    // Трафик
+    // --- ИСПРАВЛЕНИЕ ТРАФИКА ---
     const usedGb = parseFloat(params.get('gb') || 0);
-    const limitGb = 100;
+    const limitGb = 100; // Твой лимит
     const percent = Math.min((usedGb / limitGb) * 100, 100);
 
+    // Обновляем полоску
     document.getElementById('traffic_bar').style.width = percent + '%';
+    // ОБЯЗАТЕЛЬНО обновляем текст цифрами (этого у тебя не было)
+    document.getElementById('traffic').innerText = usedGb.toFixed(2) + ' GB / ∞';
 
-    // Дата
+    // --- ИСПРАВЛЕНИЕ ДАТЫ ---
     const expiry = params.get('expiry_ts');
     const expiryEl = document.getElementById('expiry_date');
 
@@ -241,11 +244,12 @@
         expiryEl.style.color = '#ef4444';
     }
 
-    // Ключ
-    const vless = params.get('vless');
+    // --- ИСПРАВЛЕНИЕ КЛЮЧА ---
+    // Достаем через 'key', как отправляет бот, а не через 'vless'
+    const key = params.get('key'); 
 
-    if (vless) {
-        document.getElementById('vless_key').innerText = decodeURIComponent(vless);
+    if (key) {
+        document.getElementById('vless_key').innerText = decodeURIComponent(key);
     } else {
         document.getElementById('vless_key').innerText = 'Ключ недоступен';
     }
