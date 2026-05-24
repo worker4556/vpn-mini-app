@@ -118,30 +118,54 @@
         <section id="tab-shop" class="tab-content">
             <h2 class="text-xl font-black mb-6 px-1 italic uppercase">Тарифные планы</h2>
             <div class="grid gap-4 mb-8">
+                
                 <div class="cyber-card p-6 border border-white/5">
-                    <div class="mb-4">
-                        <p class="font-black text-lg italic text-white uppercase">Premium 30</p>
-                        <p class="text-[11px] text-slate-500 mt-1 uppercase font-bold tracking-tighter">Все локации • Безлимит</p>
+                    <div class="mb-4 flex justify-between items-start">
+                        <div>
+                            <p class="font-black text-lg italic text-white uppercase">Premium 30</p>
+                            <p class="text-[11px] text-slate-500 mt-1 uppercase font-bold tracking-tighter">Все локации • Безлимит</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xl font-black text-indigo-400 italic">79 ₽</p>
+                            <p class="text-[9px] text-slate-500 uppercase font-bold">за месяц</p>
+                        </div>
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="sendAction('1m', 'stars')" class="flex-1 bg-indigo-500/10 px-4 py-3 rounded-xl text-indigo-400 font-black border border-indigo-500/20 text-[10px] uppercase active:scale-95 transition-all">1 ★ Stars</button>
-                        <button onclick="sendAction('1m', 'crypto')" class="flex-1 bg-orange-500/10 px-4 py-3 rounded-xl text-orange-400 font-black border border-orange-500/20 text-[10px] uppercase active:scale-95 transition-all">Crypto</button>
+                    <div class="space-y-2">
+                        <button onclick="sendAction('1m', 'yookassa')" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-3.5 rounded-xl text-white font-black text-[11px] uppercase active:scale-95 transition-all flex items-center justify-center gap-2 shadow-[0_4px_15px_rgba(99,102,241,0.2)]">
+                            💳 Оплата картой (РФ)
+                        </button>
+                        <div class="flex gap-2">
+                            <button onclick="sendAction('1m', 'stars')" class="flex-1 bg-white/5 px-4 py-2.5 rounded-xl text-amber-400 font-bold border border-white/5 text-[10px] uppercase active:scale-95 transition-all">Telegram Stars</button>
+                            <button onclick="sendAction('1m', 'crypto')" class="flex-1 bg-white/5 px-4 py-2.5 rounded-xl text-orange-400 font-bold border border-white/5 text-[10px] uppercase active:scale-95 transition-all">Crypto</button>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="cyber-card p-6 border border-indigo-500/40 bg-indigo-500/5 transition-all">
-                    <div class="mb-4">
-                        <div class="flex items-center gap-2 mb-1">
-                            <p class="font-black text-lg italic text-white uppercase">Premium 90</p>
-                            <span class="text-[9px] bg-indigo-500 text-white px-2 py-0.5 rounded font-black uppercase">Выгодно</span>
+                    <div class="mb-4 flex justify-between items-start">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <p class="font-black text-lg italic text-white uppercase">Premium 90</p>
+                                <span class="text-[9px] bg-indigo-500 text-white px-2 py-0.5 rounded font-black uppercase">Выгодно</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 uppercase font-bold tracking-tighter italic">Экономия ~10% • VIP поддержка</p>
                         </div>
-                        <p class="text-[11px] text-slate-400 uppercase font-bold tracking-tighter italic">Экономия 20% • VIP поддержка</p>
+                        <div class="text-right">
+                            <p class="text-xl font-black text-indigo-400 italic">220 ₽</p>
+                            <p class="text-[9px] text-slate-400 uppercase font-bold">всего</p>
+                        </div>
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="sendAction('3m', 'stars')" class="flex-1 bg-indigo-500 px-4 py-3 rounded-xl text-white font-black shadow-[0_0_15px_rgba(99,102,241,0.4)] text-[10px] uppercase active:scale-95 transition-all">3 ★ Stars</button>
-                        <button onclick="sendAction('3m', 'crypto')" class="flex-1 bg-orange-500 px-4 py-3 rounded-xl text-white font-black shadow-[0_0_15px_rgba(249,115,22,0.4)] text-[10px] uppercase active:scale-95 transition-all">Crypto</button>
+                    <div class="space-y-2">
+                        <button onclick="sendAction('3m', 'yookassa')" class="w-full bg-white text-black px-4 py-3.5 rounded-xl font-black text-[11px] uppercase active:scale-95 transition-all flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(255,255,255,0.1)]">
+                            💳 Оплата картой (РФ)
+                        </button>
+                        <div class="flex gap-2">
+                            <button onclick="sendAction('3m', 'stars')" class="flex-1 bg-indigo-500/20 px-4 py-2.5 rounded-xl text-white font-bold border border-indigo-500/30 text-[10px] uppercase active:scale-95 transition-all">3 ★ Stars</button>
+                            <button onclick="sendAction('3m', 'crypto')" class="flex-1 bg-orange-500/20 px-4 py-2.5 rounded-xl text-orange-400 font-bold border border-orange-500/30 text-[10px] uppercase active:scale-95 transition-all">Crypto</button>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </section>
 
@@ -214,46 +238,41 @@
     tg.headerColor = '#050505';
 
     window.onload = function() {
-    const params = new URLSearchParams(window.location.search);
+        const params = new URLSearchParams(window.location.search);
 
-    const targetTab = params.get('tab');
-    switchTab(targetTab && document.getElementById('tab-' + targetTab) ? targetTab : 'home');
+        const targetTab = params.get('tab');
+        switchTab(targetTab && document.getElementById('tab-' + targetTab) ? targetTab : 'home');
 
-    // --- ИСПРАВЛЕНИЕ ТРАФИКА ---
-    const usedGb = parseFloat(params.get('gb') || 0);
-    const limitGb = 100; // Твой лимит
-    const percent = Math.min((usedGb / limitGb) * 100, 100);
+        // --- ТРАФИК ---
+        const usedGb = parseFloat(params.get('gb') || 0);
+        const limitGb = 100; 
+        const percent = Math.min((usedGb / limitGb) * 100, 100);
+        document.getElementById('traffic_bar').style.width = percent + '%';
+        document.getElementById('traffic').innerText = usedGb.toFixed(2) + ' GB / ∞';
 
-    // Обновляем полоску
-    document.getElementById('traffic_bar').style.width = percent + '%';
-    // ОБЯЗАТЕЛЬНО обновляем текст цифрами (этого у тебя не было)
-    document.getElementById('traffic').innerText = usedGb.toFixed(2) + ' GB / ∞';
+        // --- ДАТА ---
+        const expiry = params.get('expiry_ts');
+        const expiryEl = document.getElementById('expiry_date');
 
-    // --- ИСПРАВЛЕНИЕ ДАТЫ ---
-    const expiry = params.get('expiry_ts');
-    const expiryEl = document.getElementById('expiry_date');
+        if (expiry && expiry != '0') {
+            const d = new Date(parseInt(expiry));
+            expiryEl.innerText = d.toLocaleDateString('ru-RU', {
+                day:'numeric',
+                month:'long'
+            });
+        } else {
+            expiryEl.innerText = "Подписка истекла";
+            expiryEl.style.color = '#ef4444';
+        }
 
-    if (expiry && expiry != '0') {
-        const d = new Date(parseInt(expiry));
-        expiryEl.innerText = d.toLocaleDateString('ru-RU', {
-            day:'numeric',
-            month:'long'
-        });
-    } else {
-        expiryEl.innerText = "Подписка истекла";
-        expiryEl.style.color = '#ef4444';
-    }
-
-    // --- ИСПРАВЛЕНИЕ КЛЮЧА ---
-    // Достаем через 'key', как отправляет бот, а не через 'vless'
-    const key = params.get('key'); 
-
-    if (key) {
-        document.getElementById('vless_key').innerText = decodeURIComponent(key);
-    } else {
-        document.getElementById('vless_key').innerText = 'Ключ недоступен';
-    }
-};
+        // --- КЛЮЧ ---
+        const key = params.get('key'); 
+        if (key) {
+            document.getElementById('vless_key').innerText = decodeURIComponent(key);
+        } else {
+            document.getElementById('vless_key').innerText = 'Ключ недоступен';
+        }
+    };
 
     function switchTab(id) {
         tg.HapticFeedback.impactOccurred('medium');
@@ -290,9 +309,10 @@
         });
     }
 
+    // --- ОБРАБОТКА ДЕЙСТВИЯ (ЮKASSA / STARS / CRYPTO) ---
     function sendAction(plan, method) {
         tg.HapticFeedback.impactOccurred('heavy');
-        // Передаем строку вида "buy_1m_stars" или "buy_1m_crypto"
+        // Отправит строку вида "buy_1m_yookassa", "buy_3m_stars" и т.д.
         tg.sendData(`buy_${plan}_${method}`);
         setTimeout(() => { tg.close(); }, 200);
     }
