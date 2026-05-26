@@ -32,11 +32,16 @@
             border-radius: 24px; 
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
-        
-        .shield-glow {
-            box-shadow: 0 0 25px rgba(99, 102, 241, 0.25);
-        }
 
+        /* --- АНИМАЦИИ ЛОГОТИПА "СТЕЛС-ИМПУЛЬС" --- */
+        @keyframes stealthWave {
+            0%, 100% { stroke-dasharray: 20 0; stroke-dashoffset: 0; filter: drop-shadow(0 0 2px #6366f1); }
+            50% { stroke-dasharray: 3 3; stroke-dashoffset: 5; filter: drop-shadow(0 0 8px #a855f7); }
+        }
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+        
         .tab-content { display: none; animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .tab-content.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
@@ -60,18 +65,29 @@
 </head>
 <body class="pb-32">
 
-    <header class="p-6 flex justify-between items-center sticky top-0 bg-[#090a0f]/75 backdrop-blur-xl z-50 border-b border-white/[0.04]">
-        <div class="flex items-center gap-3">
-            <div class="relative bg-indigo-500/10 p-2.5 rounded-xl border border-indigo-500/20 shield-glow">
-                <svg class="w-6 h-6 text-indigo-400" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z"/>
+    <header class="p-6 flex justify-between items-center sticky top-0 bg-[#090a0f]/85 backdrop-blur-xl z-50 border-b border-white/[0.04]">
+        <div class="flex items-center gap-4">
+            
+            <div class="relative w-12 h-12 flex items-center justify-center bg-gradient-to-br from-indigo-900/40 to-slate-900/50 rounded-2xl border border-indigo-500/30 shadow-[0_0_20px_rgba(99,102,241,0.15)] overflow-hidden">
+                <div class="absolute inset-0 bg-indigo-500/10 motion-safe:animate-pulse"></div>
+                
+                <svg class="w-7 h-7 text-indigo-400 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" stroke="rgba(99, 102, 241, 0.25)" stroke-dasharray="4 2" class="animate-[spin_20s_linear_infinite]" />
+                    
+                    <path d="M7 12h1l1.5-3.5L11 15.5l1.5-5.5L14 13.5l1-1.5h1" class="animate-[stealthWave_2s_ease-in-out_infinite]" />
                 </svg>
+                
+                <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_infinite]"></div>
             </div>
+
             <div>
-                <h1 class="text-xl font-extrabold italic tracking-tight uppercase leading-none">SILENCE <span class="text-indigo-400 font-black">PRO</span></h1>
-                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-[0.25em] mt-1">Next-Gen Encryption</p>
+                <h1 class="text-xl font-black italic tracking-tight uppercase leading-none text-white">
+                    SILENCE <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 font-black">PRO</span>
+                </h1>
+                <p class="text-[9px] text-indigo-300/60 font-bold uppercase tracking-[0.3em] mt-1">Stealth Core Active</p>
             </div>
         </div>
+
         <div>
             <div class="flex items-center gap-2 bg-emerald-500/10 px-3 py-1.5 rounded-full border border-emerald-500/20">
                 <div class="status-dot bg-emerald-400 shadow-[0_0_10px_#10b981]"></div>
