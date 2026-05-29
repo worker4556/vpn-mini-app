@@ -35,6 +35,18 @@
             border-radius: 20px; 
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        .tab-content { display: none; animation: fadeIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .nav-btn { position: relative; transition: all 0.2s ease; color: #4b5563; }
+        .nav-active { color: #f3f4f6; }
+        .nav-active::after {
+            content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+            width: 10px; height: 2px; background: #eab308; border-radius: 100px;
+            box-shadow: 0 0 8px rgba(234, 179, 8, 0.6);
+        }
         
         /* ИНТЕРАКТИВНЫЕ ИНСТРУКЦИИ С ПОДДСВЕТКОЙ ОБЪЕМА */
         .guide-item { 
@@ -87,34 +99,26 @@
             box-shadow: 0 0 20px rgba(234, 179, 8, 0.3);
             transform: scale(0.97);
         }
-
-        /* Анимация появления для всех секций */
-        section {
-            animation: fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="pb-10"> <header class="p-5 flex justify-between items-center sticky top-0 bg-[#040a17]/90 backdrop-blur-xl z-50 border-b border-indigo-500/10 mb-2">
+<body class="pb-28">
+
+    <header class="p-5 flex justify-between items-center sticky top-0 bg-[#040a17]/90 backdrop-blur-xl z-50 border-b border-indigo-500/10">
         <div class="flex items-center gap-3">
-            
             <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-indigo-950/40 border border-indigo-500/20 relative overflow-hidden">
                 <svg class="w-7 h-7 text-indigo-400 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
                     <circle cx="12" cy="12" r="6" stroke="#6366f1" stroke-opacity="0.6" fill="rgba(10, 20, 42, 0.8)" />
                     <path d="M12 6a6 6 0 0 1 0 12M12 6a6 6 0 0 0 0 12" stroke="#8b52f6" stroke-opacity="0.4" />
-                    
                     <g class="orbit-1">
                         <ellipse cx="12" cy="12" rx="9" ry="2.5" transform="rotate(-15 12 12)" stroke="#eab308" stroke-opacity="0.4" stroke-dasharray="2 2" />
                         <circle cx="21" cy="12" r="1.2" fill="#eab308" />
                     </g>
-                    
                     <g class="orbit-2">
                         <ellipse cx="12" cy="12" rx="9" ry="2.5" transform="rotate(35 12 12)" stroke="#3b82f6" stroke-opacity="0.3" stroke-dasharray="3 3" />
                         <circle cx="3" cy="12" r="1.2" fill="#3b82f6" />
                     </g>
                 </svg>
             </div>
-
             <div>
                 <h1 class="text-lg font-bold tracking-tight uppercase leading-none text-white/90">
                     SILENCE <span class="font-extrabold text-amber-400">PRO</span>
@@ -122,7 +126,6 @@
                 <p class="text-[8px] text-indigo-300/60 font-medium uppercase tracking-[0.15em] mt-1">Next-Gen Encryption</p>
             </div>
         </div>
-
         <div>
             <div class="flex items-center gap-1.5 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
                 <div class="status-dot bg-emerald-400"></div>
@@ -133,7 +136,7 @@
 
     <main class="px-5 pt-4">
         
-        <section class="mb-10">
+        <section id="tab-home" class="tab-content">
             <div class="glass-card p-5 mb-5 relative overflow-hidden">
                 <p class="text-indigo-300/50 text-[9px] font-bold uppercase tracking-widest mb-1">Статус подписки</p>
                 <h2 id="expiry_date" class="text-2xl font-bold mb-5 text-white/95 tracking-tight">Загрузка...</h2>
@@ -184,9 +187,7 @@
             </div>
         </section>
 
-        <hr class="border-indigo-500/10 mb-8 mt-2">
-
-        <section class="mb-10">
+        <section id="tab-shop" class="tab-content">
             <h2 class="text-lg font-bold mb-4 px-1 uppercase tracking-tight text-indigo-200">Тарифные планы</h2>
             <div class="grid gap-4 mb-6">
                 
@@ -236,9 +237,7 @@
             </div>
         </section>
 
-        <hr class="border-indigo-500/10 mb-8 mt-2">
-
-        <section class="mb-10">
+        <section id="tab-guides" class="tab-content">
             <h2 class="text-lg font-bold mb-4 px-1 uppercase tracking-tight text-indigo-200">Настройка софта</h2>
             <div class="space-y-3.5">
                 
@@ -250,7 +249,7 @@
                     <p class="text-[9px] text-indigo-300/50 mb-2 font-bold uppercase tracking-wide">Рекомендуем: <span class="text-amber-400">V2Box</span></p>
                     <ol class="text-[10px] text-slate-400 space-y-2 font-medium">
                         <li>1. Скачайте <b class="text-white font-semibold">V2Box</b> из App Store.</li>
-                        <li>2. Скопируйте персональный ключ в блоке выше.</li>
+                        <li>2. Скопируйте персональный ключ на главной вкладке.</li>
                         <li>3. В приложении: <span class="text-indigo-300">Configs</span> → <span class="text-indigo-300">+</span> → <span class="text-white">Import from Clipboard</span>.</li>
                         <li>4. Запустите соединение на главном экране софта.</li>
                     </ol>
@@ -281,9 +280,7 @@
             </div>
         </section>
 
-        <hr class="border-indigo-500/10 mb-8 mt-2">
-
-        <section class="mb-5">
+        <section id="tab-refs" class="tab-content">
             <div class="glass-card p-6 text-center relative overflow-hidden">
                 <div class="text-3xl mb-3">🛰️</div>
                 <h2 class="text-xl font-bold mb-1 uppercase tracking-tight text-white/90">Referral Hub</h2>
@@ -302,16 +299,37 @@
                 <p id="copy_hint" class="text-[8px] text-indigo-300/40 mt-3 uppercase font-bold hidden italic tracking-wider animate-pulse">Нажмите на ссылку выше, чтобы скопировать её</p>
             </div>
         </section>
-
     </main>
+
+    <nav class="fixed bottom-6 left-6 right-6 bg-[#040a17]/95 backdrop-blur-2xl border border-indigo-500/20 flex justify-around p-3 rounded-[20px] z-50 shadow-[0_20px_40px_rgba(0,0,0,0.5)]">
+        <button onclick="switchTab('home')" id="btn-home" class="nav-btn p-1.5">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        </button>
+        <button onclick="switchTab('shop')" id="btn-shop" class="nav-btn p-1.5">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <rect x="2" y="5" width="20" height="14" rx="2" />
+                <line x1="2" y1="10" x2="22" y2="10" />
+                <path d="M6 14h2v1H6z" fill="currentColor" stroke="none" class="opacity-30"/>
+            </svg>
+        </button>
+        <button onclick="switchTab('guides')" id="btn-guides" class="nav-btn p-1.5">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </button>
+        <button onclick="switchTab('refs')" id="btn-refs" class="nav-btn p-1.5">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        </button>
+    </nav>
 
 <script>
     const tg = window.Telegram.WebApp;
+    tg.ready(); // <-- Обязательная инициализация, которой не было
     tg.expand();
     tg.headerColor = '#040a17';
 
     window.onload = function() {
         const params = new URLSearchParams(window.location.search);
+        const targetTab = params.get('tab');
+        switchTab(targetTab && document.getElementById('tab-' + targetTab) ? targetTab : 'home');
 
         // ТРАФИК
         const usedGb = parseFloat(params.get('gb') || 0);
@@ -351,8 +369,16 @@
         }
     };
 
+    function switchTab(id) {
+        if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active'));
+        document.getElementById('tab-' + id).classList.add('active');
+        document.getElementById('btn-' + id).classList.add('nav-active');
+    }
+
     function generateRefLink() {
-        tg.HapticFeedback.impactOccurred('light');
+        if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
         const params = new URLSearchParams(window.location.search);
         const userId = params.get('user_id') || '0000';
         const link = `https://t.me/kolipsfv_bot?start=ref${userId}`;
@@ -362,26 +388,57 @@
         btn.classList.add('bg-white/5', 'text-[11px]', 'text-amber-400', 'lowercase', 'border', 'border-indigo-500/20');
         document.getElementById('copy_hint').classList.remove('hidden');
         btn.onclick = function() {
-            navigator.clipboard.writeText(link).then(() => {
-                tg.HapticFeedback.notificationOccurred('success');
-                tg.showAlert('Ссылка скопирована!');
-            });
+            copyToClipboard(link, 'Ссылка скопирована!');
         };
     }
 
     function copyKey() {
         const key = document.getElementById('vless_key').innerText;
         if (key.includes('доступен после')) return;
-        navigator.clipboard.writeText(key).then(() => {
-            tg.HapticFeedback.notificationOccurred('success');
-            tg.showAlert('Ключ скопирован!');
-        });
+        copyToClipboard(key, 'Ключ скопирован!');
+    }
+
+    // Универсальная функция копирования (в WebApp на iOS иногда падает стандартный API)
+    function copyToClipboard(text, successMessage) {
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => {
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                tg.showAlert(successMessage);
+            }).catch(err => fallbackCopy(text, successMessage));
+        } else {
+            fallbackCopy(text, successMessage);
+        }
+    }
+
+    function fallbackCopy(text, successMessage) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+            tg.showAlert(successMessage);
+        } catch (err) {
+            tg.showAlert('Ошибка копирования. Скопируйте вручную.');
+        }
+        document.body.removeChild(textArea);
     }
 
     function sendAction(plan, method) {
-        tg.HapticFeedback.impactOccurred('medium');
-        tg.sendData(`buy_${plan}_${method}`);
-        setTimeout(() => { tg.close(); }, 200);
+        if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+        
+        // ВАЖНО: tg.sendData работает ТОЛЬКО если WebApp открыт через кнопку KeyboardButton (в меню).
+        // Если WebApp открывается по Inline-кнопке (под сообщением), этот метод не сработает!
+        // Для Inline-кнопок используй fetch/AJAX запросы на свой бэкенд.
+        if (tg.sendData) {
+            tg.sendData(`buy_${plan}_${method}`);
+            setTimeout(() => { tg.close(); }, 200);
+        } else {
+            tg.showAlert('Функция sendData недоступна. Откройте приложение через меню.');
+        }
     }
 
     setInterval(() => {
