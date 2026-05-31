@@ -24,7 +24,6 @@
             overflow-x: hidden; 
         }
         
-        /* РОСКОШНЫЕ ОКАНТОВКИ С ГРАДИЕНТОМ NAVY / GOLD / PURPLE */
         .glass-card { 
             background: var(--card);
             backdrop-filter: blur(20px);
@@ -48,7 +47,6 @@
             box-shadow: 0 0 8px rgba(234, 179, 8, 0.6);
         }
         
-        /* ИНТЕРАКТИВНЫЕ ИНСТРУКЦИИ С ПОДДСВЕТКОЙ ОБЪЕМА */
         .guide-item { 
             background: rgba(13, 27, 56, 0.4); 
             border-radius: 18px; 
@@ -71,7 +69,6 @@
         .status-dot { width: 5px; height: 5px; border-radius: 50%; animation: blink 2.5s infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-        /* ОРБИТЫ СПУТНИКОВ */
         @keyframes spinOrbit {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
@@ -79,7 +76,6 @@
         .orbit-1 { animation: spinOrbit 9s linear infinite; transform-origin: 12px 12px; }
         .orbit-2 { animation: spinOrbit 14s linear infinite reverse; transform-origin: 12px 12px; }
 
-        /* БЛАГОРОДНЫЙ NAVY-GOLD ПЕРЕЛИВ ДЛЯ КНОПОК ОПЛАТЫ */
         @keyframes subtleMetallic {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -322,7 +318,7 @@
 
 <script>
     const tg = window.Telegram.WebApp;
-    tg.ready(); // <-- Обязательная инициализация, которой не было
+    tg.ready();
     tg.expand();
     tg.headerColor = '#040a17';
 
@@ -338,13 +334,13 @@
         document.getElementById('traffic_bar').style.width = percent + '%';
         document.getElementById('traffic').innerText = usedGb.toFixed(2) + ' GB / ∞';
 
-        // ПОДПИСКА
+        // ПОДПИСКА (ОБРАТНЫЙ ОТСЧЕТ СКОЛЬКО ОСТАЛОСЬ)
         const expiry = params.get('expiry_ts');
         const expiryEl = document.getElementById('expiry_date');
 
         if (expiry && expiry != '0') {
             let ts = parseInt(expiry);
-            if (ts < 10000000000) ts *= 1000;
+            if (ts < 10000000000) ts *= 1000; // перевод в миллисекунды, если передали секунды
             const expiryDate = new Date(ts);
             const now = new Date();
 
@@ -352,7 +348,17 @@
                 expiryEl.innerText = "Истекла";
                 expiryEl.style.color = '#f43f5e';
             } else {
-                expiryEl.innerText = expiryDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+                // Считаем разницу во времени
+                const diffMs = expiryDate - now;
+                const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                
+                if (diffDays > 0) {
+                    expiryEl.innerText = `Осталось: ${diffDays} д. ${diffHours} ч.`;
+                } else {
+                    const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+                    expiryEl.innerText = `Осталось: ${diffHours} ч. ${diffMins} мин.`;
+                }
                 expiryEl.style.color = ''; 
             }
         } else {
@@ -370,11 +376,15 @@
     };
 
     function switchTab(id) {
+        const tab = document.getElementById('tab-' + id);
+        const btn = document.getElementById('btn-' + id);
+        if (!tab || !btn) return;
+
         if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active'));
-        document.getElementById('tab-' + id).classList.add('active');
-        document.getElementById('btn-' + id).classList.add('nav-active');
+        tab.classList.add('active');
+        btn.classList.add('nav-active');
     }
 
     function generateRefLink() {
@@ -398,7 +408,6 @@
         copyToClipboard(key, 'Ключ скопирован!');
     }
 
-    // Универсальная функция копирования (в WebApp на iOS иногда падает стандартный API)
     function copyToClipboard(text, successMessage) {
         if (navigator.clipboard && window.isSecureContext) {
             navigator.clipboard.writeText(text).then(() => {
@@ -429,10 +438,6 @@
 
     function sendAction(plan, method) {
         if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
-        
-        // ВАЖНО: tg.sendData работает ТОЛЬКО если WebApp открыт через кнопку KeyboardButton (в меню).
-        // Если WebApp открывается по Inline-кнопке (под сообщением), этот метод не сработает!
-        // Для Inline-кнопок используй fetch/AJAX запросы на свой бэкенд.
         if (tg.sendData) {
             tg.sendData(`buy_${plan}_${method}`);
             setTimeout(() => { tg.close(); }, 200);
